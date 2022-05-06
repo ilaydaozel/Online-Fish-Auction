@@ -99,7 +99,12 @@ const Navbar = () => {
               <Right>
                 <MenuItem>
                     <PageLink href= '/'>
-                        ANASAYFA
+                        Anasayfa
+                    </PageLink>
+                </MenuItem>
+                <MenuItem>
+                    <PageLink href= '/auctionList'>
+                        Mezatlar
                     </PageLink>
                 </MenuItem>
 
