@@ -3,6 +3,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Button, makeStyles } from '@material-ui/core';
 import styled from "styled-components"
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -12,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "700",
         fontSize: "13px",
         width: "50%",
+        display: 'flex',
 
         '&:hover': {
             backgroundColor: "#F76540",
@@ -21,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     joinButton: {
+        /*https://tr.reactjs.org/docs/conditional-rendering.html*/
         backgroundColor: "#1b4171",
         border: '2px solid #1b4171',
         color: "#FFFFFF",
@@ -28,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "700",
         fontSize: "13px",
         width: "50%",
-        display: ({open}) => open? "flex": "none", 
+        /*display: ({open}) => open? "flex": "none", */
         marginTop: "10px",
         
 
@@ -78,14 +81,9 @@ const AuctionCard = ({item}) => {
         statusText = "Kapalı";
         isOpen = 0;
     }
-
-    const props = {
-        open: isOpen
-      }
     
-  const classes = useStyles(props);
 
-
+  const classes = useStyles();
   return (
         <Container check={isOpen}>
             <AuctionInfo>
@@ -107,14 +105,18 @@ const AuctionCard = ({item}) => {
             Deniz Ürünleri
             </Button>
 
+            {isOpen? 
+            <Link to = {`/fishList/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
             <Button
                 variant="contained"
                 size="large"
                 className={classes.joinButton}
                 endIcon={<AddCircleOutlineIcon />}
-            >
-            Mezata Katıl
+            >Mezata Katıl
             </Button>
+            </Link>
+            : <div/> }
+
         </Container> 
   )
 }
