@@ -96,6 +96,7 @@ const AuctionCard = ({item}) => {
                 <Content>{statusText}</Content>
             </AuctionInfo>
       
+            <Link to = {`/fishList/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
             <Button
                 variant="contained"
                 size="large"
@@ -104,6 +105,7 @@ const AuctionCard = ({item}) => {
             >
             Deniz Ürünleri
             </Button>
+            </Link>
 
             {isOpen? 
             <Link to = {`/fishList/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >

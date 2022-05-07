@@ -8,6 +8,7 @@ import { Link } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
     //to arrange the placement of navbar contents
+
     toolbar: {
         display: "flex",
         justifyContent: "space-between",
