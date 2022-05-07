@@ -9,7 +9,7 @@ const Container = styled.div`
 `
 const CardContainer = styled.div`
     display: flex;
-    /*padding: 30px 200px;*/
+    padding: 30px 100px;
     flex-wrap: wrap;
     justify-content: center;
     ${mobile({padding: "10px", flexDirection: "column"})};
