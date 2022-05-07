@@ -53,7 +53,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: ${(props) => props.check? "#FFC9C0": "#f5fbfd"}; ;
+    background-color: ${(props) => props.check? "#fff3b0": "#f5fbfd"}; ;
     position: relative;
     padding: 10px;
 `
@@ -108,7 +108,7 @@ const AuctionCard = ({item}) => {
             </Link>
 
             {isOpen? 
-            <Link to = {`/fishList/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
+            <Link to = {`/auction/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
             <Button
                 variant="contained"
                 size="large"
