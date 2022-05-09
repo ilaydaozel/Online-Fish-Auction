@@ -7,6 +7,7 @@ import React from 'react';
 const Container=styled.div`
     display:flex;
     align-content: space-between;
+    margin: auto 0;
 
 `;
 
