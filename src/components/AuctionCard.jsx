@@ -36,9 +36,10 @@ const useStyles = makeStyles((theme) => ({
         
 
         '&:hover': {
-            backgroundColor: "#F76540",
-            border: '2px solid #F76540',
-            color:"white",
+            backgroundColor: "#5ac8dd",
+            border: '2px solid #1b4171',
+            
+            
         }
     },
 }))

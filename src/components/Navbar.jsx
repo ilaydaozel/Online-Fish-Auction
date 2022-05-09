@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import logoImage from "../images/logo.jpeg"
+import logoImage from "../images/logo.png"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/core';
 import {mobile} from "../responsive.js"
@@ -37,11 +37,13 @@ const useStyles = makeStyles((theme) => ({
         /*if the screen is bigger than small screen size, then*/
         [theme.breakpoints.up("sm")]: {
             display: "block",
+            color: "black",
         },
     },
-    logoSm: {
+    logoSm: {   
         fontSize: "15px",
         display: "block",
+        color: "black",
         //if the screen is bigger than small screen size, then
         [theme.breakpoints.up("sm")]: {
             display: "none",
@@ -98,6 +100,13 @@ const Navbar = () => {
                   </Typography>
               </Left>
               <Right>
+                
+                <MenuItem>
+                    <PageLink href= '/login'>
+                        Giriş Yap
+                    </PageLink>
+                </MenuItem>
+
                 <MenuItem>
                     <PageLink href= '/'>
                         Anasayfa
@@ -108,6 +117,12 @@ const Navbar = () => {
                         Mezatlar
                     </PageLink>
                 </MenuItem>
+                <MenuItem>
+                    <PageLink href= '/addfish'>
+                        Balık Ekle
+                    </PageLink>
+                </MenuItem>
+
 
                   <MenuItem>
                       <Button

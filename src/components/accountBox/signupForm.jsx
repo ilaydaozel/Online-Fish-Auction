@@ -19,9 +19,9 @@ export function SignupForm(props) {
         <Input type="text" placeholder="İsim" />
         <Input type="text" placeholder="Soyisim" />
         <Input type="email" placeholder="Email" />
-        <Input type="password" placeholder="Şifre" />
         <Input type="address" placeholder="Adres" />
         <Input type="phone" placeholder="Telefon" />
+        <Input type="password" placeholder="Şifre" />
         <Input type="password" placeholder="Şifre Tekrar" />
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
