@@ -26,7 +26,6 @@ const Left =styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 `;
 
 const Right =styled.div`
@@ -41,7 +40,7 @@ const LogoImage = styled.img`
     margin: 20px auto 0;
     
 `
-const Title = styled.h2`
+const Title = styled.h1`
     font-weight: 700;
     color: #1b4171;
     text-align: center;

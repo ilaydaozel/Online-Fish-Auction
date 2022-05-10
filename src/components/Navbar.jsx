@@ -60,7 +60,7 @@ const Left= styled.div`
     cursor: pointer;
 `
 const LogoImage = styled.img`
-    max-width: 50px;
+    max-width: 40px;
     margin-right: 10px;
 `
 const Right = styled.div`
