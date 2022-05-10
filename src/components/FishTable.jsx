@@ -73,7 +73,7 @@ const   FishTable = () => {
 
   return (
     <Container>
-    <Title> Mezata Katılacak Balıklar</Title>
+    <Title> Mezatta Satılacak Balıklar</Title>
     {BasicTable(fishData)}
     </Container>
   )
