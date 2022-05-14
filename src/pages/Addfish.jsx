@@ -6,7 +6,7 @@ const Container = styled.div`
 
 `
 
-const Addfish = () => {
+const AddFish = () => {
   return (
     <Container>
         <Navbar />
@@ -15,4 +15,4 @@ const Addfish = () => {
   )
 }
 
-export default Addfish
+export default AddFish

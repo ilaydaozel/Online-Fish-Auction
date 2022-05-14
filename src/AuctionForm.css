@@ -1,0 +1,53 @@
+.AuctionForm {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.AuctionForm-inner {
+    position: relative;
+    padding: 32px;
+    width: 100%;
+    max-width: 640px;
+    background-color: white;
+    text-align: center;
+    border-radius: 16px;
+}
+
+.AuctionForm form {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+
+.AuctionForm-inner .close-button {
+    color: white;
+    background-color: orange;
+    border: 0;
+    border-radius: 8px;
+    padding: 8px;
+
+}
+
+.AuctionForm-inner .back {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    
+
+}
+
+.BackspaceIcon {
+    top: 6px;
+    right: 6px;
+  }

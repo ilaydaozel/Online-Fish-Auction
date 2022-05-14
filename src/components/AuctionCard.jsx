@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     },
 
     joinButton: {
-        /*https://tr.reactjs.org/docs/conditional-rendering.html*/
         backgroundColor: "#1b4171",
         border: '2px solid #1b4171',
         color: "#FFFFFF",
