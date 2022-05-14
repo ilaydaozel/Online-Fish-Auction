@@ -16,12 +16,11 @@ const CardContainer = styled.div`
     justify-content: center;
     ${mobile({ padding: "10px", flexDirection: "column" })};
 `
-const Title = styled.h2`
-    font-weight: 700;
+const Title = styled.h1`
+    font-weight: 1000;
     color: #1b4171;
     text-align: center;
-    margin-top: 80px;
-    margin-bottom: 40px;
+    margin-top: 100px;
     ${mobile({ marginTop: "50px", marginBottom: "10px" })};
 `
 
@@ -99,13 +98,6 @@ const AuctionCardList = () => {
         <Container>
             <Title> Güncel Mezatlar </Title>
             <CardContainer>
-                {
-                    auctionList.map((auction, i) => (
-                        <li key={i}>
-                            {auctionList.auctiounStatus}
-                        </li>
-                    ))
-                }
                 {AuctionArray.map(item => (
                     <AuctionCard item={item} />
                 ))}

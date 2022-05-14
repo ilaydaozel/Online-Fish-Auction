@@ -7,6 +7,11 @@ function AuctionForm(props) {
 
     const [new_date, setnew_date] = useState('');
 
+    const handleClose = () => {
+        handleSubmit()
+        props.setTrigger(false)
+      }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         var date = new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString();        
@@ -46,7 +51,7 @@ function AuctionForm(props) {
                     />
                     <br />
                     <br />
-                    <button className="close-button" >Yeni mezat ekle</button>
+                    <button className="close-button" onClick= {handleClose} >Yeni mezat ekle</button>
                 </form>
                 
             </div>

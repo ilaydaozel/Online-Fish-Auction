@@ -5,6 +5,7 @@ import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/co
 import {mobile} from "../responsive.js"
 import React from 'react';
 import { Link } from "react-router-dom"
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const useStyles = makeStyles((theme) => ({
     //to arrange the placement of navbar contents
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "5px",
         fontWeight: "700",
         fontSize: "13px",
+        width: "100px",
 
         '&:hover': {
             backgroundColor: "#1b4171",
@@ -67,12 +69,13 @@ const Right = styled.div`
     flex:1;
     display: flex;
     align-items: center;
-    margin-right: 30px;
-    justify-content: flex-end;
+    justify-content: space-between;
     ${mobile({flexDirection:"column"})};
 `
 const MenuItem = styled.div`
-    margin-left: 25px;
+    display: flex;
+    width: 100px;
+    margin-left: 35px;
 `
 const PageLink =styled.a`
     color: black;
@@ -134,6 +137,9 @@ const Navbar = () => {
                         Hesabım
                       </Button>
                   </MenuItem>
+                <MenuItem>
+                    <LogoutIcon style={{color: "black"}}/>
+                </MenuItem>  
               </Right>
           </Toolbar>
       </AppBar>

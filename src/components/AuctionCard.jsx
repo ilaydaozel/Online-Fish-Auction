@@ -4,6 +4,7 @@ import { Button, makeStyles } from '@material-ui/core';
 import styled from "styled-components"
 import React from 'react';
 import {Link} from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -23,22 +24,18 @@ const useStyles = makeStyles((theme) => ({
     },
 
     joinButton: {
-        backgroundColor: "#1b4171",
+        backgroundColor: "#5ac8dd",
         border: '2px solid #1b4171',
         color: "#FFFFFF",
         borderRadius: "10px",
         fontWeight: "700",
         fontSize: "13px",
         width: "50%",
-        /*display: ({open}) => open? "flex": "none", */
+        color: "black",
         marginTop: "10px",
-        
-
         '&:hover': {
             backgroundColor: "#5ac8dd",
             border: '2px solid #1b4171',
-            
-            
         }
     },
 }))
@@ -66,6 +63,14 @@ const Title = styled.h4`
     margin-right: 5px;
 `
 const Content = styled.h5`
+
+`
+const AuctionButtons = styled.div`
+    width: 100%;
+    display: flex; 
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
 `
 
@@ -108,15 +113,25 @@ const AuctionCard = ({item}) => {
             </Link>
 
             {isOpen? 
-            <Link to = {`/auction/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
-            <Button
-                variant="contained"
-                size="large"
-                className={classes.joinButton}
-                endIcon={<AddCircleOutlineIcon />}
-            >Mezata Katıl
-            </Button>
-            </Link>
+            <AuctionButtons>
+                <Link to = {`/auction/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
+                <Button
+                    variant="contained"
+                    size="large"
+                    className={classes.joinButton}
+                    endIcon={<AddCircleOutlineIcon />}
+                >Mezata Katıl
+                </Button>
+                </Link>
+                <Button
+                    variant="contained"
+                    size="large"
+                    className={classes.joinButton}
+                    endIcon={<CloseIcon />}
+                >Mezatı Bitir
+                </Button>
+            </AuctionButtons>
+
             : <div/> }
 
         </Container> 

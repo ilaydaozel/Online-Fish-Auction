@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FisherPhoto from '../images/fisher.jpg';
-
+import {Link} from 'react-router-dom';
 
 const Container=styled.div`
     display: flex;
@@ -78,7 +78,9 @@ const HomeContent = () => {
         <Title>Balıklıova Deniz Ürünleri Mezatı'na Hoş Geldiniz!</Title>
         <Description>En taze balıkları oturduğunuz yerden satın almak için doğru yerdesiniz.</Description>
         </Content>
+        <Link to = {`/auctionList`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
         <Button>Mezatları Gör <ChevronRightIcon/></Button>
+        </Link>
     </Left>
 
     <Right>

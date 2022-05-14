@@ -16,7 +16,6 @@ const FishForm = () => {
     // console.log(current);
     //!
 
-
     fetch('http://localhost:8080/package', {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
