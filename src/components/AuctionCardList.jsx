@@ -98,8 +98,8 @@ const AuctionCardList = () => {
         <Container>
             <Title> Güncel Mezatlar </Title>
             <CardContainer>
-                {AuctionArray.map(item => (
-                    <AuctionCard item={item} />
+                {auctionList.map(item => (
+                    <AuctionCard item={item} key={item.id} />
                 ))}
             </CardContainer>
 

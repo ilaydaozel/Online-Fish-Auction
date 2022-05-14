@@ -40,9 +40,9 @@ function AuctionForm(props) {
                     <BackspaceIcon onClick={() => props.setTrigger(false)}></BackspaceIcon>
                     <h6>Geri Dön</h6>
                 </div>
-                <h3 style={{color: 'blue'}}>Yeni Mezat Ekle</h3>
+                <h3 style={{color: '#1B4171', fontWeight: "bold"}}>Yeni Mezat Ekle</h3>
                 <form  className="form" onSubmit={handleSubmit}>
-                    <label>Yeni mezat için bir tarih girin:  </label>
+                    <label style={{paddingRight: "10px"}}>Yeni mezat için bir tarih girin:  </label>
                     <input  
                     type="date" 
                     required 

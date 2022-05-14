@@ -5,6 +5,9 @@ import styled from "styled-components"
 import React from 'react';
 import {Link} from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
+import EventIcon from '@mui/icons-material/Event';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -59,8 +62,12 @@ const AuctionInfo = styled.div`
     align-items: flex-end;
     margin: 5px 0;
 `
-const Title = styled.h4`
+const Title = styled.h5`
     margin-right: 5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    
 `
 const Content = styled.h5`
 
@@ -73,17 +80,20 @@ const AuctionButtons = styled.div`
     align-items: center;
 
 `
+const AuctionBox = styled.div`
+    padding-bottom: 20px;
+`
 
 const AuctionCard = ({item}) => {
 
   let statusText;
   let isOpen;
-    if (item.status === "OPEN") {
+    if (item.auctionStatus === "OPEN") {
         statusText = "Açık";
         isOpen = 1 ;
     }
-    else {
-        statusText = "Kapalı";
+    else if (item.auctionStatus === "STARTING") {
+        statusText = "Henüz Başlamadı";
         isOpen = 0;
     }
     
@@ -91,16 +101,21 @@ const AuctionCard = ({item}) => {
   const classes = useStyles();
   return (
         <Container check={isOpen}>
+        <AuctionBox>
             <AuctionInfo>
-                <Title>Gerçekleşme Tarihi:</Title>
-                <Content>{item.date}</Content>
+                <Title><EventIcon/> Tarih:</Title>
+                <Content>{item.auctionStart}</Content>
             </AuctionInfo>
-
             <AuctionInfo>
-                <Title>Durumu:</Title>
+                <Title><AccessTimeIcon/> Saat:</Title>
+                <Content>{item.auctionStart}</Content>
+            </AuctionInfo>
+            <AuctionInfo>
+                <Title><BookmarkIcon/> Durumu:</Title>
                 <Content>{statusText}</Content>
             </AuctionInfo>
-      
+        </AuctionBox>
+
             <Link to = {`/fishList/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
             <Button
                 variant="contained"
