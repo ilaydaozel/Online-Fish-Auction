@@ -10,39 +10,41 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CheckIcon from '@mui/icons-material/Check';
 import SetMealIcon from '@mui/icons-material/SetMeal';
+import AddAuctionNotification from './AddAuctionNotification';
 
 
 const useStyles = makeStyles((theme) => ({
     button: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F76540",
         border: '2px solid #F76540',
         borderRadius: "10px",
         fontWeight: "700",
         fontSize: "13px",
-        width: "50%",
+        width: "60%",
         display: 'flex',
         marginTop: "5px",
+        color: "#FFFFFF",
 
         '&:hover': {
-            backgroundColor: "#F76540",
+            backgroundColor: "#FFFFFF",
             border: '2px solid #F76540',
-            color:"white",
+            color:"#000000",
         }
     },
 
     joinButton: {
-        backgroundColor: "#5ac8dd",
+        backgroundColor: "#1b4171",
         border: '2px solid #1b4171',
         color: "#FFFFFF",
         borderRadius: "10px",
         fontWeight: "700",
         fontSize: "13px",
-        width: "50%",
-        color: "black",
+        width: "60%",
         marginTop: "5px",
         '&:hover': {
-            backgroundColor: "#5ac8dd",
+            backgroundColor: "#FFFFFF",
             border: '2px solid #1b4171',
+            color: "#000",
         }
     },
 }))
@@ -50,7 +52,9 @@ const useStyles = makeStyles((theme) => ({
 const Container= styled.div`
     display: flex;
     justify-content: center;
-    align-items: center;`
+    align-items: center;
+    
+    `
 
 const CardContainer = styled.div`
     margin: 15px 5px ;
@@ -60,8 +64,9 @@ const CardContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: ${(props) => props.check? "#fff3b0": "#f5fbfd"}; ;
+    background-color: ${(props) => props.check? "#fefae0": "#f5fbfd"}; ;
     position: relative;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.1);;
 `
 const AuctionInfo = styled.div`
     display: flex;
@@ -102,8 +107,8 @@ const AuctionCard = ({item}) => {
         statusText = "Henüz Başlamadı";
         isOpen = 0;
     }
-    const [error, setError] = useState(null);
     const [packageList, setPackageList] = useState([]);
+    const [started, setStarted] = useState(false);
 
     useEffect(() => {
         console.log("fetch");
@@ -113,21 +118,22 @@ const AuctionCard = ({item}) => {
                 (result) => {
                     setPackageList(result);
                     console.log("res", result);
-                },
-                (error) => {
-                    setError(error);
-                    console.log(error);
                 })
     }, []);
     console.log("balıklar 0",packageList[0]);
+
     const startAuction = (e) => {
-        e.preventDefault();
         fetch(`http://localhost:8080/auction/start/${item.id}`, {
             method: 'PUT',
-            }).then((response) => response.json())
+            }).then((response) =>{ 
+            response.json()
+            e.preventDefault();
+            setStarted(true);
+        })
             .then((result) => {
-                console.log("değişti", result);
+                console.log("başladı", result);
             }) }
+
 
     const endAuction = (e) => {
         e.preventDefault();
@@ -176,11 +182,11 @@ const AuctionCard = ({item}) => {
         <AuctionBox>
             <AuctionInfo>
                 <Title><EventIcon/> Tarih:</Title>
-                <Content>{item.auctionStart}</Content>
+                <Content>{item.auctionStart.split('T')[0]}</Content>
             </AuctionInfo>
             <AuctionInfo>
                 <Title><AccessTimeIcon/> Saat:</Title>
-                <Content>{item.auctionStart}</Content>
+                <Content>{item.auctionStart.split('T')[1]}</Content>
             </AuctionInfo>
             <AuctionInfo>
                 <Title><BookmarkIcon/> Durumu:</Title>
@@ -225,17 +231,18 @@ const AuctionCard = ({item}) => {
             <Button onClick={startAuction}
                     variant="contained"
                     size="large"
-                    className={classes.button}
+                    className={classes.joinButton}
                     endIcon={<CheckIcon />}
                 >Mezatı Başlat
             </Button>
+            <AddAuctionNotification trigger={started} setTrigger={setStarted} message="Mezat Başlatıldı"></AddAuctionNotification>
 
             <Button onClick={AddFishToPack}
                     variant="contained"
                     size="large"
-                    className={classes.button}
+                    className={classes.joinButton}
                     endIcon={<SetMealIcon />}
-                >Balık Ekle
+                >Deniz Ürünü Ekle
             </Button>
             </AuctionButtons>        
             }

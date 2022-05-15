@@ -21,24 +21,22 @@ const Title = styled.h1`
     margin-top: 100px;
     ${mobile({ marginTop: "50px", marginBottom: "10px" })};
 `
+const TopContainer=styled.div`
+`
+const BottomContainer=styled.div``
+
 const AuctionCardList = () => {
-    const [error, setError] = useState(null);
     const [auctionList, setAuctionList] = useState([]);
 
     useEffect(() => {
-        console.log("fetch");
         fetch('http://localhost:8080/auction')
             .then(res => res.json())
             .then(
                 (result) => {
                     setAuctionList(result);
                     console.log("res", result);
-                },
-                (error) => {
-                    setError(error);
-                    console.log(error);
                 })
-    }, []);
+    });
 
     console.log(auctionList);
 
@@ -47,9 +45,9 @@ const AuctionCardList = () => {
             <Title> Güncel Mezatlar </Title>
             <CardContainer>
                 {auctionList.map(item => (
-                    ((item.auctionStatus === "OPEN") || (item.auctionStatus === "STARTING"))?<AuctionCard item={item} key={item.id} /> : ""))}
+                    (item.auctionStatus === "OPEN")? <TopContainer><AuctionCard item={item} key={item.id} /></TopContainer>: (item.auctionStatus === "STARTING")? <BottomContainer><AuctionCard item={item} key={item.id} /></BottomContainer> : ""))
+                    }     
             </CardContainer>
-
         </Container>
     )
 }
