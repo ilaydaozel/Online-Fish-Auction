@@ -10,7 +10,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CheckIcon from '@mui/icons-material/Check';
 import SetMealIcon from '@mui/icons-material/SetMeal';
-import AddAuctionNotification from './AddAuctionNotification';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -108,19 +108,15 @@ const AuctionCard = ({item}) => {
         isOpen = 0;
     }
     const [packageList, setPackageList] = useState([]);
-    const [started, setStarted] = useState(false);
 
     useEffect(() => {
-        console.log("fetch");
         fetch('http://localhost:8080/package/allUnsoldPackages')
             .then(res => res.json())
             .then(
                 (result) => {
                     setPackageList(result);
-                    console.log("res", result);
                 })
     }, []);
-    console.log("balıklar 0",packageList[0]);
 
     const startAuction = (e) => {
         fetch(`http://localhost:8080/auction/start/${item.id}`, {
@@ -128,7 +124,6 @@ const AuctionCard = ({item}) => {
             }).then((response) =>{ 
             response.json()
             e.preventDefault();
-            setStarted(true);
         })
             .then((result) => {
                 console.log("başladı", result);
@@ -136,14 +131,15 @@ const AuctionCard = ({item}) => {
 
 
     const endAuction = (e) => {
-        e.preventDefault();
         fetch(`http://localhost:8080/auction/end/${item.id}`, {
             method: 'PUT',
-            }).then((response) => response.json())
+            }).then((response) => {
+                response.json()
+                e.preventDefault();
+            })
             .then((result) => {
                 console.log("değişti", result);
             })
-
             }  
 
     const AddFishToPack = (e) => {
@@ -225,6 +221,7 @@ const AuctionCard = ({item}) => {
                 >Mezatı Bitir
                 </Button>
             </AuctionButtons>
+            
 
             :   
             <AuctionButtons>      
@@ -235,7 +232,6 @@ const AuctionCard = ({item}) => {
                     endIcon={<CheckIcon />}
                 >Mezatı Başlat
             </Button>
-            <AddAuctionNotification trigger={started} setTrigger={setStarted} message="Mezat Başlatıldı"></AddAuctionNotification>
 
             <Button onClick={AddFishToPack}
                     variant="contained"

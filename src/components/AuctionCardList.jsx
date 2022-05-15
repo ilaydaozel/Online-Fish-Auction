@@ -34,11 +34,8 @@ const AuctionCardList = () => {
             .then(
                 (result) => {
                     setAuctionList(result);
-                    console.log("res", result);
                 })
     });
-
-    console.log(auctionList);
 
     return (
         <Container>

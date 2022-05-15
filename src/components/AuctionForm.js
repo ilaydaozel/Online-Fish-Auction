@@ -6,7 +6,7 @@ import AddAuctionNotification from './AddAuctionNotification';
 
 function AuctionForm(props) {
 
-    const [added, setadded] = useState(false);
+    const [added, setAdded] = useState(false);
 
     const [new_date, setnew_date] = useState('');
     const [new_time, setnew_time] = useState('');
@@ -19,7 +19,7 @@ function AuctionForm(props) {
     const handleSubmit = (e) => {
 
         e.preventDefault();
-        setadded(true);
+        setAdded(true);
         var nowDate = new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString();
         console.log("now", nowDate)
         var date = new_date+'T'+new_time+':48.000Z'
@@ -70,7 +70,7 @@ function AuctionForm(props) {
                     <br />
                     <br />
                     <button className="close-button" onClick= {handleClose} >Yeni mezat ekle</button>
-                    <AddAuctionNotification trigger={added} setTrigger={setadded} message="Mezat Eklendi"></AddAuctionNotification>
+                    <AddAuctionNotification trigger={added} setTrigger={setAdded} message="Mezat Eklendi"></AddAuctionNotification>
                 </form>
                 
             </div>
