@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import {AuctionArray} from "../data"
 import {Fish} from "../data"
@@ -57,18 +57,41 @@ function BasicTable(rows) {
 
 const   FishTable = () => {
   const { auctionId } = useParams()
-  let currentAuction = AuctionArray.find(item => item.aucId === parseInt(auctionId));
-  let fishList = currentAuction.fishList
-  let currentFish
+  const [error, setError] = useState(null);
+  const [auctionList, setAuctionList] = useState([]);
+
+  useEffect(() => {
+      console.log("fetch");
+      fetch('http://localhost:8080/auction')
+          .then(res => res.json())
+          .then(
+              (result) => {
+                  setAuctionList(result);
+                  console.log("result auuc", result);
+              },
+              (error) => {
+                  setError(error);
+                  console.log(error);
+              })
+  }, []);
+
+  console.log(auctionList);
   const fishData=[]
 
-  for (let i = 0; i < fishList.length; i++) {
-    console.log("balık list id", fishList[i])
-    currentFish = Fish.find(item => item.fishId === parseInt(fishList[i]))
-    console.log("current type", currentFish.type)
-    const fishObj = {fishType: currentFish.type, amountKg: currentFish.weigthInKg,  basePrice: currentFish.basePrice}
-    fishData.push(fishObj)
+  let currentAuction = auctionList.find(item => item.id === auctionId);
+ /* console.log("cur auc", currentAuction.fishList)
+  let curFishList
+
+  if(currentAuction.fishList.length>0){
+    curFishList = currentAuction.fishList;
+    for (let i = 0; i < curFishList.length; i++) {
+      console.log("current", curFishList[i])
+      const fishObj = {fishType: curFishList[i].fishType, amountKg: curFishList[i].fishAmount,  basePrice: curFishList[i].basePrice}
+      fishData.push(fishObj)
+    }
   }
+*/
+
 
 
   return (

@@ -2,12 +2,15 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Button, makeStyles } from '@material-ui/core';
 import styled from "styled-components"
-import React from 'react';
+import React, {useEffect, useState}from 'react';
 import {Link} from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import CheckIcon from '@mui/icons-material/Check';
+import SetMealIcon from '@mui/icons-material/SetMeal';
+
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -18,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "13px",
         width: "50%",
         display: 'flex',
+        marginTop: "5px",
 
         '&:hover': {
             backgroundColor: "#F76540",
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "13px",
         width: "50%",
         color: "black",
-        marginTop: "10px",
+        marginTop: "5px",
         '&:hover': {
             backgroundColor: "#5ac8dd",
             border: '2px solid #1b4171',
@@ -43,19 +47,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const Container= styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;`
 
-const Container = styled.div`
-    flex: 1;
-    margin: 5px;
+const CardContainer = styled.div`
+    margin: 15px 5px ;
     min-width: ${(props) => props.check? "800px": "400px"};
-    height: 350px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: ${(props) => props.check? "#fff3b0": "#f5fbfd"}; ;
     position: relative;
-    padding: 10px;
 `
 const AuctionInfo = styled.div`
     display: flex;
@@ -96,11 +102,77 @@ const AuctionCard = ({item}) => {
         statusText = "Henüz Başlamadı";
         isOpen = 0;
     }
+    const [error, setError] = useState(null);
+    const [packageList, setPackageList] = useState([]);
+
+    useEffect(() => {
+        console.log("fetch");
+        fetch('http://localhost:8080/package/allUnsoldPackages')
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setPackageList(result);
+                    console.log("res", result);
+                },
+                (error) => {
+                    setError(error);
+                    console.log(error);
+                })
+    }, []);
+    console.log("balıklar 0",packageList[0]);
+    const startAuction = (e) => {
+        e.preventDefault();
+        fetch(`http://localhost:8080/auction/start/${item.id}`, {
+            method: 'PUT',
+            }).then((response) => response.json())
+            .then((result) => {
+                console.log("değişti", result);
+            }) }
+
+    const endAuction = (e) => {
+        e.preventDefault();
+        fetch(`http://localhost:8080/auction/end/${item.id}`, {
+            method: 'PUT',
+            }).then((response) => response.json())
+            .then((result) => {
+                console.log("değişti", result);
+            })
+
+            }  
+
+    const AddFishToPack = (e) => {
+        e.preventDefault();
+        fetch(`http://localhost:8080/auction/addFish/${item.id}`, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            /*body: JSON.stringify({
+                fishType: packageList[0].fishType,
+                fishAmount: packageList[0].fishAmount,
+                sellerId: "",
+                buyerId: null,
+                basePrice: packageList[0].basePrice,
+                soldPrice: null,
+                soldDate: null,
+                auctionId: "62802d81adf87b09accdc43e",
+                status: "UNSOLD"
+            }),*/
+            body: JSON.stringify(packageList[0]),
+            
+            }).then((response) => response.json())
+            .then((result) => {
+                console.log("balık eklendi", result);
+            })
     
+                    
+    }
+       
+
+             
 
   const classes = useStyles();
   return (
-        <Container check={isOpen}>
+    <Container>
+        <CardContainer check={isOpen}>
         <AuctionBox>
             <AuctionInfo>
                 <Title><EventIcon/> Tarih:</Title>
@@ -116,7 +188,7 @@ const AuctionCard = ({item}) => {
             </AuctionInfo>
         </AuctionBox>
 
-            <Link to = {`/fishList/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
+            <Link to = {`/fishList/${item.id}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
             <Button
                 variant="contained"
                 size="large"
@@ -127,9 +199,10 @@ const AuctionCard = ({item}) => {
             </Button>
             </Link>
 
+
             {isOpen? 
             <AuctionButtons>
-                <Link to = {`/auction/${item.aucId}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
+                <Link to = {`/auction/${item.id}`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
                 <Button
                     variant="contained"
                     size="large"
@@ -138,7 +211,7 @@ const AuctionCard = ({item}) => {
                 >Mezata Katıl
                 </Button>
                 </Link>
-                <Button
+                <Button onClick={endAuction}
                     variant="contained"
                     size="large"
                     className={classes.joinButton}
@@ -147,9 +220,28 @@ const AuctionCard = ({item}) => {
                 </Button>
             </AuctionButtons>
 
-            : <div/> }
+            :   
+            <AuctionButtons>      
+            <Button onClick={startAuction}
+                    variant="contained"
+                    size="large"
+                    className={classes.button}
+                    endIcon={<CheckIcon />}
+                >Mezatı Başlat
+            </Button>
 
-        </Container> 
+            <Button onClick={AddFishToPack}
+                    variant="contained"
+                    size="large"
+                    className={classes.button}
+                    endIcon={<SetMealIcon />}
+                >Balık Ekle
+            </Button>
+            </AuctionButtons>        
+            }
+
+        </CardContainer> 
+        </Container>
   )
 }
 

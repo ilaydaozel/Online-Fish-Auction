@@ -9,13 +9,6 @@ const FishForm = () => {
     e.preventDefault();
     const new_fish = { species, kilogram, floor_price };
 
-    // ! lazım olcak saat dilimi de 
-    // const current = new Date();
-    // // const currentDateTime: current.toLocaleString();
-    // current.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    // console.log(current);
-    //!
-
     fetch('http://localhost:8080/package', {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -34,6 +27,26 @@ const FishForm = () => {
       .then((result) => {
         console.log("ekledi");
       })
+
+      fetch('http://localhost:8080/package', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fishType: new_fish.species,
+          fishAmount: new_fish.kilogram,
+          sellerId: "12314123",
+          buyerId: null,
+          basePrice: new_fish.floor_price,
+          soldPrice: null,
+          soldDate: null,
+          auctionId: "62803099adf87b09accdc440",
+          status: "UNSOLD"
+        }),
+      }).then((response) => response.json())
+        .then((result) => {
+          console.log("ekledi");
+        })
+
   }
 
   return (

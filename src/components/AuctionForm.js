@@ -23,7 +23,7 @@ function AuctionForm(props) {
                 auctionStatus: "STARTING",
                 auctionStart: date,
                 auctionEnd: "",
-                fishList: null,
+                fishList: [],
                 bidList: null
             }),
             }).then((response) => response.json())

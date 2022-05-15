@@ -10,8 +10,6 @@ const AuctionContainer=styled.div`
     align-items: center;
     
 `
-
-
 const AuctionButton = styled.button`
     display: flex;
     align-items: center;
