@@ -9,8 +9,8 @@ const FishForm = () => {
     e.preventDefault();
     const new_fish = { species, kilogram, floor_price };
 
-    fetch('http://localhost:8080/package', {
-      method: 'POST',
+    fetch('http://localhost:8080/auction/addFish', {
+      method: 'PUT',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         fishType: new_fish.species,
@@ -20,32 +20,12 @@ const FishForm = () => {
         basePrice: new_fish.floor_price,
         soldPrice: null,
         soldDate: null,
-        auctionId: "1",
         status: "UNSOLD"
       }),
     }).then((response) => response.json())
       .then((result) => {
         console.log("ekledi");
       })
-
-      fetch('http://localhost:8080/package', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fishType: new_fish.species,
-          fishAmount: new_fish.kilogram,
-          sellerId: "12314123",
-          buyerId: null,
-          basePrice: new_fish.floor_price,
-          soldPrice: null,
-          soldDate: null,
-          auctionId: "62803099adf87b09accdc440",
-          status: "UNSOLD"
-        }),
-      }).then((response) => response.json())
-        .then((result) => {
-          console.log("ekledi");
-        })
 
   }
 
