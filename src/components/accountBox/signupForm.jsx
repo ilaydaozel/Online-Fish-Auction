@@ -85,9 +85,9 @@ export function SignupForm(props) {
 
   return (
     <BoxContainer>
-      <FormContainer>
+      <FormContainer required="true">
         <Input type="text" placeholder="İsim" value={isim} onChange={(e) => setisim(e.target.value)} />
-        <Input type="text" placeholder="Soyisim" value={soyisim} onChange={(e) => setsoyisim(e.target.value)} />
+        <Input type="text" required placeholder="Soyisim" value={soyisim} onChange={(e) => setsoyisim(e.target.value)} />
         <Input type="email" placeholder="Email" value={email} onChange={(e) => setemail(e.target.value)} />
         <Input type="address" placeholder="Adres" value={adres} onChange={(e) => setadres(e.target.value)} />
         <Input type="phone" placeholder="Telefon" value={phone} onChange={(e) => setphone(e.target.value)} />

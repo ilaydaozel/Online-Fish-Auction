@@ -113,11 +113,7 @@ const Navbar = () => {
                     </Typography>
                 </Left>
                 <Right>
-                    <MenuItem>
-                        <PageLink href='/login'>
-                            Giriş Yap
-                        </PageLink>
-                    </MenuItem>
+
                     <MenuItem>
                         <PageLink href='/'>
                             Anasayfa

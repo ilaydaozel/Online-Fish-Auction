@@ -13,6 +13,8 @@ import emailDoesntExistNotification from '../notifications/emailDoesntExistNotif
 import wrongPasswordNotification from '../notifications/wrongPasswordNotification';
 import loginSuccessNotification from '../notifications/loginSuccessNotification';
 import { Navigate } from "react-router-dom";
+import NegativeNotification from '../NegativeNotification';
+
 
 export function LoginForm(props) {
 
@@ -24,6 +26,8 @@ export function LoginForm(props) {
   const [emaildoesntexist, setemaildoesntexist] = useState(false);
   const [wrongpassword, setwrongpassword] = useState(false);
   const [loginsuccess, setloginsuccess] = useState(false);
+  const [er, setEr] = useState(false);
+
 
   const [flag, setflag] = useState(false);
   //let navigate = Navigate();
@@ -38,15 +42,18 @@ export function LoginForm(props) {
         userMail: email,
         password: password
       }),
-    }).then((response) => response.json()
-    ).then((result) => {
-      localStorage.setItem("tokenKey", result.message);
-      localStorage.setItem("currentUser", result.userId);
-      localStorage.setItem("userMail", email)
-      console.log(result.message);
-      window.location.reload(true);
-
-    })
+    }).then((response) => response.json())
+      .then((result) => {
+        if (result.userId) {
+          localStorage.setItem("tokenKey", result.message)
+          localStorage.setItem("currentUser", result.userId)
+          localStorage.setItem("userMail", email)
+          window.location.reload(true);
+        } else {
+          setEr(true);
+        }
+        console.log("result message", result);
+      })
 
     setemail("");
     setpassword("");
@@ -81,6 +88,7 @@ export function LoginForm(props) {
       <emailDoesntExistNotification trigger={emaildoesntexist} setTrigger={setemaildoesntexist}></emailDoesntExistNotification>
       <wrongPasswordNotification trigger={wrongpassword} setTrigger={setwrongpassword}></wrongPasswordNotification>
       <loginSuccessNotification trigger={loginsuccess} setTrigger={setloginsuccess}></loginSuccessNotification>
+      <NegativeNotification trigger={er} setTrigger={setEr} message="E-mail ya da şifre yanlış"></NegativeNotification>
 
 
       <Marginer direction="vertical" margin="1em" />

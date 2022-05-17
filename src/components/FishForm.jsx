@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import PositiveNotification from './PositiveNotification';
+import NegativeNotification from './NegativeNotification';
+
 
 const FishForm = () => {
   const [species, setSpecies] = useState('');
@@ -7,6 +9,7 @@ const FishForm = () => {
   const [floorPrice, setFloorPrice] = useState('');
   const [sellerName, setSellerName] = useState('');
   const [added, setAdded] = useState(false);
+  const [notAdded, setNotAdded] = useState(false);
   const [error, setError] = useState();
 
 
@@ -26,7 +29,6 @@ const FishForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setAdded(true);
     const newFish = { species, kilogram, floorPrice, sellerName };
 
     fetch('http://localhost:8080/auction/addFish', {
@@ -38,10 +40,17 @@ const FishForm = () => {
         basePrice: newFish.floorPrice,
         sellerName: newFish.sellerName,
       }),
-    }).then((response) => response.json())
+    }).then((response) => response.json(),
+      setAdded(true),
+    )
       .then((result) => {
-        console.log("ekledi");
+        console.log("res", result);
+      }).then((error) => {
+        setNotAdded(true);
+        setError(error);
+        console.log("err", error);
       })
+
 
   }
 
@@ -80,6 +89,7 @@ const FishForm = () => {
 
         <button>Balık Ekle</button>
         <PositiveNotification trigger={added} setTrigger={setAdded} message="Yeni Deniz Ürünü Eklendi"></PositiveNotification>
+        <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message="Deniz Ürünü Eklenmedi"></NegativeNotification>
 
       </form>
     </div>

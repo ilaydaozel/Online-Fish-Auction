@@ -13,10 +13,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path='/' element={< Home />}></Route>
-        <Route exact path='/auctionList' element={< AuctionList />}></Route>
-        <Route exact path='/fishList/:auctionId' element={< AuctionFishTable />}></Route>
-        <Route exact path='/auction/:auctionId' element={< Auction />}></Route>
+        <Route exact path='/' element={localStorage.getItem("currentUser") != null ? <Home /> : <Navigate to="/login" />}></Route>
+        <Route exact path='/auctionList' element={localStorage.getItem("currentUser") != null ? <AuctionList /> : <Navigate to="/login" />}></Route>
+        <Route exact path='/fishList/:auctionId' element={localStorage.getItem("currentUser") != null ? <AuctionFishTable /> : <Navigate to="/login" />}></Route>
+        <Route exact path='/auction/:auctionId' element={localStorage.getItem("currentUser") != null ? <Auction /> : <Navigate to="/login" />}></Route>
         <Route exact path='/login'
           element={localStorage.getItem("currentUser") != null ? <Navigate to="/" /> : <Login />}>
         </Route>
