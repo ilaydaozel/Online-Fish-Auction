@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import {AuctionArray} from "../data"
-import {Fish} from "../data"
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -32,6 +30,7 @@ function BasicTable(rows) {
             <TableCell> <Typography variant="h6" gutterBottom component="div" sx={{fontWeight: 'bold'}}>Balık Cinsi</Typography></TableCell>
             <TableCell align="right"><Typography variant="h6" gutterBottom component="div"  sx={{fontWeight: 'bold' }}>Kg</Typography></TableCell>
             <TableCell align="right"><Typography variant="h6" gutterBottom component="div"  sx={{fontWeight: 'bold'}}>Başlangıç Fiyatı</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6" gutterBottom component="div"  sx={{fontWeight: 'bold'}}>Balıkçı</Typography></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -45,6 +44,7 @@ function BasicTable(rows) {
               </TableCell>
               <TableCell align="right">{row.amountKg}</TableCell>
               <TableCell align="right">{row.basePrice}</TableCell>
+              <TableCell align="right">{row.sellerName}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -59,15 +59,15 @@ const   FishTable = () => {
   const { auctionId } = useParams()
   const [error, setError] = useState(null);
   const [auctionList, setAuctionList] = useState([]);
+  const [currentFishList, setCurrentFishList]= useState([]);
 
   useEffect(() => {
-      console.log("fetch");
       fetch('http://localhost:8080/auction')
           .then(res => res.json())
           .then(
               (result) => {
                   setAuctionList(result);
-                  console.log("result auuc", result);
+                  setCurrentFishList(result.find(item => item.id === auctionId).fishList)
               },
               (error) => {
                   setError(error);
@@ -75,24 +75,13 @@ const   FishTable = () => {
               })
   }, []);
 
-  console.log(auctionList);
   const fishData=[]
 
-  let currentAuction = auctionList.find(item => item.id === auctionId);
- /* console.log("cur auc", currentAuction.fishList)
-  let curFishList
-
-  if(currentAuction.fishList.length>0){
-    curFishList = currentAuction.fishList;
-    for (let i = 0; i < curFishList.length; i++) {
-      console.log("current", curFishList[i])
-      const fishObj = {fishType: curFishList[i].fishType, amountKg: curFishList[i].fishAmount,  basePrice: curFishList[i].basePrice}
-      fishData.push(fishObj)
-    }
+  for (let i = 0; i < currentFishList.length; i++) {
+    console.log("current", currentFishList[i])
+    const fishObj = {fishType: currentFishList[i].fishType, amountKg: currentFishList[i].fishAmount,  basePrice: currentFishList[i].basePrice, sellerName: currentFishList[i].sellerName }
+    fishData.push(fishObj)
   }
-*/
-
-
 
   return (
     <Container>

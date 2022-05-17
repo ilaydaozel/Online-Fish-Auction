@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import '../AuctionForm.css'
 import BackspaceIcon from '@mui/icons-material/Backspace';
-import AddAuctionNotification from './AddAuctionNotification';
+import PositiveNotification from './PositiveNotification';
 
 function AuctionForm(props) {
 
@@ -72,7 +72,7 @@ function AuctionForm(props) {
                     <br />
                     <br />
                     <button className="close-button" onClick={handleClose} >Yeni mezat ekle</button>
-                    <AddAuctionNotification trigger={added} setTrigger={setAdded} message="Mezat Eklendi"></AddAuctionNotification>
+                    <PositiveNotification trigger={added} setTrigger={setAdded} message="Mezat Eklendi"></PositiveNotification>
                 </form>
 
             </div>

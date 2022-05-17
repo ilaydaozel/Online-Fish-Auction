@@ -1,26 +1,26 @@
 import { useState } from "react";
+import PositiveNotification from './PositiveNotification';
 
 const FishForm = () => {
-  const [species, setspecies] = useState('');
-  const [kilogram, setkilogram] = useState('');
-  const [floor_price, setfloor_price] = useState('');
+  const [species, setSpecies] = useState('');
+  const [kilogram, setKilogram] = useState('');
+  const [floorPrice, setFloorPrice] = useState('');
+  const [sellerName, setSellerName] = useState('');
+  const [added, setAdded] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const new_fish = { species, kilogram, floor_price };
+    setAdded(true);
+    const newFish = { species, kilogram, floorPrice, sellerName };
 
     fetch('http://localhost:8080/auction/addFish', {
       method: 'PUT',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        fishType: new_fish.species,
-        fishAmount: new_fish.kilogram,
-        sellerId: "12314123",
-        buyerId: null,
-        basePrice: new_fish.floor_price,
-        soldPrice: null,
-        soldDate: null,
-        status: "UNSOLD"
+        fishType: newFish.species,
+        fishAmount: newFish.kilogram,
+        basePrice: newFish.floorPrice,
+        sellerName: newFish.sellerName,
       }),
     }).then((response) => response.json())
       .then((result) => {
@@ -40,23 +40,31 @@ const FishForm = () => {
           type="text"
           required
           value={species}
-          onChange={(e) => setspecies(e.target.value)}
+          onChange={(e) => setSpecies(e.target.value)}
         />
 
         <label>Kilosu:</label>
         <input
           required
           value={kilogram}
-          onChange={(e) => setkilogram(e.target.value)}
+          onChange={(e) => setKilogram(e.target.value)}
         />
 
         <label>Taban Fiyatı:</label>
         <input
-          value={floor_price}
-          onChange={(e) => setfloor_price(e.target.value)}
+          value={floorPrice}
+          onChange={(e) => setFloorPrice(e.target.value)}
+        />
+
+        <label>Satıcı Adı:</label>
+        <input
+          value={sellerName}
+          onChange={(e) => setSellerName(e.target.value)}
         />
 
         <button>Balık Ekle</button>
+        <PositiveNotification trigger={added} setTrigger={setAdded} message="Yeni Deniz Ürünü Eklendi"></PositiveNotification>
+
       </form>
     </div>
   );
