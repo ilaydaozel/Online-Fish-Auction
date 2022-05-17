@@ -1,5 +1,4 @@
 import React from 'react'
-import '../AddAuctionNotification.css'
 import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';
 import styled from "styled-components";
 
