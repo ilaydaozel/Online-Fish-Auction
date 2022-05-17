@@ -1,4 +1,4 @@
-import React, { useContext, useState , useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   BoldLink,
   BoxContainer,
@@ -12,6 +12,7 @@ import { AccountContext } from "./accountContext";
 import emailDoesntExistNotification from '../notifications/emailDoesntExistNotification';
 import wrongPasswordNotification from '../notifications/wrongPasswordNotification';
 import loginSuccessNotification from '../notifications/loginSuccessNotification';
+import { Navigate } from "react-router-dom";
 
 export function LoginForm(props) {
 
@@ -25,66 +26,58 @@ export function LoginForm(props) {
   const [loginsuccess, setloginsuccess] = useState(false);
 
   const [flag, setflag] = useState(false);
+  //let navigate = Navigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    isExist();
-    
+
+    fetch('http://localhost:8080/auth/login', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userMail: email,
+        password: password
+      }),
+    }).then((response) => response.json()
+    ).then((result) => {
+      localStorage.setItem("tokenKey", result.message);
+      localStorage.setItem("currentUser", result.userId);
+      localStorage.setItem("userMail", email)
+      console.log(result.message);
+      window.location.reload(true);
+
+    })
+
+    setemail("");
+    setpassword("");
+    // history.go("/login");
+
+    //navigate.href("/login")
+
+
+
   }
-
-  const [userList, setuserList] = useState([]);
-
-  useEffect(() => {
-      fetch('http://localhost:8080/user')
-          .then(res => res.json())
-          .then(
-              (result) => {
-                  setuserList(result);
-              })
-  });
-
-  const isExist = () => {
-    setflag(true);
-    {userList.map(item => (
-      (item.email === email)? isCorrect({item}) : ""))
-    }
-    if(flag){
-      setemaildoesntexist(true)
-    }
-  }
-
-  const isCorrect = ({item}) => {
-    if(item.password === password) {
-      setloginsuccess(true);
-      //redirect to homepage
-    }else {
-      setwrongpassword(true);
-      setflag(false);
-      
-    }
-  }
-  
 
   return (
     <BoxContainer>
       <FormContainer>
-        <Input 
-        type="email" 
-        placeholder="Email" 
-        value={email}
-        onChange={(e) => setemail(e.target.value)}
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setemail(e.target.value)}
         />
-        <Input 
-        type="password" 
-        placeholder="Şifre" 
-        value={password}
-        onChange={(e) => setpassword(e.target.value)}
+        <Input
+          type="password"
+          placeholder="Şifre"
+          value={password}
+          onChange={(e) => setpassword(e.target.value)}
         />
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
       <Marginer direction="vertical" margin="1.6em" />
 
-      <SubmitButton type="submit" onClick= {handleSubmit} >Giriş Yap</SubmitButton>
+      <SubmitButton type="submit" onClick={handleSubmit} >Giriş Yap</SubmitButton>
       <emailDoesntExistNotification trigger={emaildoesntexist} setTrigger={setemaildoesntexist}></emailDoesntExistNotification>
       <wrongPasswordNotification trigger={wrongpassword} setTrigger={setwrongpassword}></wrongPasswordNotification>
       <loginSuccessNotification trigger={loginsuccess} setTrigger={setloginsuccess}></loginSuccessNotification>

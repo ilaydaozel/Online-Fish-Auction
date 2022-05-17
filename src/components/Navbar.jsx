@@ -2,9 +2,10 @@ import styled from 'styled-components'
 import logoImage from "../images/logo.png"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/core';
-import {mobile} from "../responsive.js"
-import React from 'react';
-import { Link } from "react-router-dom"
+import { mobile } from "../responsive.js"
+import React, { useState } from 'react';
+import { Navigate, Link } from "react-router-dom";
+
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
         '&:hover': {
             backgroundColor: "#1b4171",
-            color:"white",
+            color: "white",
         },
         /*if the screen is smaller than small screen size, then*/
         [theme.breakpoints.down("sm")]: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
             color: "black",
         },
     },
-    logoSm: {   
+    logoSm: {
         fontSize: "15px",
         display: "block",
         color: "black",
@@ -51,10 +52,10 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-    
+
 }));
 
-const Left= styled.div`
+const Left = styled.div`
     flex:1;
     display: flex;
     align-items: center;
@@ -70,14 +71,14 @@ const Right = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    ${mobile({flexDirection:"column"})};
+    ${mobile({ flexDirection: "column" })};
 `
 const MenuItem = styled.div`
     display: flex;
     width: 100px;
     margin-left: 35px;
 `
-const PageLink =styled.a`
+const PageLink = styled.a`
     color: black;
     text-decoration: none;
     font-size: 15px;
@@ -88,60 +89,72 @@ const PageLink =styled.a`
 
 const Navbar = () => {
     const classes = useStyles();
-    return (
-      <AppBar>
-          <Toolbar className= {classes.toolbar}>
-              <Left>
-              <Link to = {`/`}>  
-                  <LogoImage src={logoImage} ></LogoImage>
-                  </Link>
-                  <Typography variant="h6" className={classes.logoLg}>
-                      Balıklıova Mezat
-                  </Typography>
-                  <Typography variant="h6" className={classes.logoSm}>
-                      Balıklıova Mezat
-                  </Typography>
-              </Left>
-              <Right>
-                <MenuItem>
-                    <PageLink href= '/login'>
-                        Giriş Yap
-                    </PageLink>
-                </MenuItem>
-                <MenuItem>
-                    <PageLink href= '/'>
-                        Anasayfa
-                    </PageLink>
-                </MenuItem>
-                <MenuItem>
-                    <PageLink href= '/auctionList'>
-                        Mezatlar
-                    </PageLink>
-                </MenuItem>
-                <MenuItem>
-                    <PageLink href= '/addfish'>
-                        Balık Ekle
-                    </PageLink>
-                </MenuItem>
+    const [loggedOut, setLoggedOut] = useState(false);
+    const handleLogOut = (e) => {
+        localStorage.clear();
+        setLoggedOut(true);
+        console.log(loggedOut);
+        window.location.reload(true);
 
-                  <MenuItem>
-                      <Button
-                          variant="contained"
-                          size="large"
-                          className={classes.button}
-                          endIcon={<AccountCircleIcon/>}
-                      >
-                        Hesabım
-                      </Button>
-                  </MenuItem>
-                <MenuItem>
-                    <LogoutIcon style={{color: "black"}}/>
-                </MenuItem>  
-              </Right>
-          </Toolbar>
-      </AppBar>
-      
+    }
+
+    return (
+        <AppBar>
+            <Toolbar className={classes.toolbar}>
+                <Left>
+                    <Link to={`/`}>
+                        <LogoImage src={logoImage} ></LogoImage>
+                    </Link>
+                    <Typography variant="h6" className={classes.logoLg}>
+                        Balıklıova Mezat
+                    </Typography>
+                    <Typography variant="h6" className={classes.logoSm}>
+                        Balıklıova Mezat
+                    </Typography>
+                </Left>
+                <Right>
+                    <MenuItem>
+                        <PageLink href='/login'>
+                            Giriş Yap
+                        </PageLink>
+                    </MenuItem>
+                    <MenuItem>
+                        <PageLink href='/'>
+                            Anasayfa
+                        </PageLink>
+                    </MenuItem>
+                    <MenuItem>
+                        <PageLink href='/auctionList'>
+                            Mezatlar
+                        </PageLink>
+                    </MenuItem>
+                    <MenuItem>
+                        <PageLink href='/addfish'>
+                            Balık Ekle
+                        </PageLink>
+                    </MenuItem>
+
+                    <MenuItem>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            className={classes.button}
+                            endIcon={<AccountCircleIcon />}
+                        >
+                            Hesabım
+                        </Button>
+                    </MenuItem>
+                    <MenuItem>
+                        <button onClick={handleLogOut}>
+                            <LogoutIcon style={{ color: "black" }} />
+                        </button>
+                        {loggedOut ? <Navigate to="/login" /> : ""}
+                    </MenuItem>
+                </Right>
+            </Toolbar>
+        </AppBar>
+
     )
-  }
+}
 
 export default Navbar;

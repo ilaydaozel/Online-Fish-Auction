@@ -2,14 +2,14 @@ import styled from "styled-components";
 import React from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FisherPhoto from '../images/fisher.jpg';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const Container=styled.div`
+const Container = styled.div`
     display: flex;
     margin-top: 100px;
 `;
 
-const Left =styled.div`
+const Left = styled.div`
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -18,7 +18,7 @@ const Left =styled.div`
     padding: 0 0 0 20px;
 `;
 
-const Right =styled.div`
+const Right = styled.div`
     width: 50%;
     display: flex;
     align-items: center;
@@ -69,26 +69,27 @@ const Button = styled.button`
 
 const Content = styled.div``
 
-    
+
 const HomeContent = () => {
-  return (
-    <Container>
-    <Left>
-        <Content>
-        <Title>Balıklıova Deniz Ürünleri Mezatı'na Hoş Geldiniz!</Title>
-        <Description>En taze balıkları oturduğunuz yerden satın almak için doğru yerdesiniz.</Description>
-        </Content>
-        <Link to = {`/auctionList`} style={{width: "100%", display: 'flex', justifyContent: 'center'}} >
-        <Button>Mezatları Gör <ChevronRightIcon/></Button>
-        </Link>
-    </Left>
+    console.log("current user", localStorage.getItem("currentUser"));
+    return (
+        <Container>
+            <Left>
+                <Content>
+                    <Title>Balıklıova Deniz Ürünleri Mezatı'na Hoş Geldiniz!</Title>
+                    <Description>En taze balıkları oturduğunuz yerden satın almak için doğru yerdesiniz.</Description>
+                </Content>
+                <Link to={`/auctionList`} style={{ width: "100%", display: 'flex', justifyContent: 'center' }} >
+                    <Button>Mezatları Gör <ChevronRightIcon /></Button>
+                </Link>
+            </Left>
 
-    <Right>
-        <Image src={FisherPhoto}/>
-    </Right>
-    </Container>
+            <Right>
+                <Image src={FisherPhoto} />
+            </Right>
+        </Container>
 
-  )
+    )
 }
 
 export default HomeContent

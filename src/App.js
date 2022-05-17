@@ -6,7 +6,7 @@ import Auction from './pages/Auction';
 import AddFish from './pages/Addfish';
 import Login from "./pages/Login";
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 
 function App() {
@@ -17,7 +17,9 @@ function App() {
         <Route exact path='/auctionList' element={< AuctionList />}></Route>
         <Route exact path='/fishList/:auctionId' element={< AuctionFishTable />}></Route>
         <Route exact path='/auction/:auctionId' element={< Auction />}></Route>
-        <Route exact path='/login' element={<Login />}></Route>
+        <Route exact path='/login'
+          element={localStorage.getItem("currentUser") != null ? <Navigate to="/" /> : <Login />}>
+        </Route>
         <Route exact path='/addFish' element={< AddFish />}></Route>
       </Routes>
     </Router>
