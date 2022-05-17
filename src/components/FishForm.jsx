@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PositiveNotification from './PositiveNotification';
 
 const FishForm = () => {
@@ -7,6 +7,22 @@ const FishForm = () => {
   const [floorPrice, setFloorPrice] = useState('');
   const [sellerName, setSellerName] = useState('');
   const [added, setAdded] = useState(false);
+  const [error, setError] = useState();
+
+
+  const [currentDate, setCurrentDate] = useState('');
+  useEffect(() => {
+    fetch('http://localhost:8080/auction/getCurrentAuction')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setCurrentDate(result.auctionStart);
+        },
+        (error) => {
+          setError(error);
+          console.log(error);
+        })
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +48,7 @@ const FishForm = () => {
   return (
     <div className="create">
       <h1>Deniz ürünlerini sıradaki mezata ekle</h1>
-      <p style={{ color: '#1b4171', fontWeight: 'bold' }}>Sıradaki mezat tarihi : 16.06.2022 16:00</p>
+      <p style={{ color: '#1b4171', fontWeight: 'bold' }}>Sıradaki mezat tarihi : {currentDate}</p>
 
       <form onSubmit={handleSubmit}>
         <label>Balık Türü:</label>
