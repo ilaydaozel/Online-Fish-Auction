@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import {
   BoldLink,
   BoxContainer,
@@ -9,10 +9,6 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import EmailDoesntExistNotification from '../notifications/emailDoesntExistNotification';
-import WrongPasswordNotification from '../notifications/wrongPasswordNotification';
-import LoginSuccessNotification from '../notifications/loginSuccessNotification';
-import { Navigate } from "react-router-dom";
 import NegativeNotification from '../NegativeNotification';
 
 
@@ -22,15 +18,8 @@ export function LoginForm(props) {
 
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
-
-  const [emaildoesntexist, setemaildoesntexist] = useState(false);
-  const [wrongpassword, setwrongpassword] = useState(false);
-  const [loginsuccess, setloginsuccess] = useState(false);
   const [er, setEr] = useState(false);
 
-
-  const [flag, setflag] = useState(false);
-  //let navigate = Navigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,12 +46,6 @@ export function LoginForm(props) {
 
     setemail("");
     setpassword("");
-    // history.go("/login");
-
-    //navigate.href("/login")
-
-
-
   }
 
   return (
@@ -85,9 +68,6 @@ export function LoginForm(props) {
       <Marginer direction="vertical" margin="1.6em" />
 
       <SubmitButton type="submit" onClick={handleSubmit} >Giriş Yap</SubmitButton>
-      <EmailDoesntExistNotification trigger={emaildoesntexist} setTrigger={setemaildoesntexist}></EmailDoesntExistNotification>
-      <WrongPasswordNotification trigger={wrongpassword} setTrigger={setwrongpassword}></WrongPasswordNotification>
-      <LoginSuccessNotification trigger={loginsuccess} setTrigger={setloginsuccess}></LoginSuccessNotification>
       <NegativeNotification trigger={er} setTrigger={setEr} message="E-mail ya da şifre yanlış"></NegativeNotification>
 
 

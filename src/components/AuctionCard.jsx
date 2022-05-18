@@ -9,7 +9,7 @@ import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CheckIcon from '@mui/icons-material/Check';
-import SetMealIcon from '@mui/icons-material/SetMeal';
+
 
 
 
@@ -142,33 +142,6 @@ const AuctionCard = ({ item }) => {
                 console.log("değişti", result);
             })
     }
-
-    const AddFishToPack = (e) => {
-        e.preventDefault();
-        fetch(`http://localhost:8080/auction/addFish/${item.id}`, {
-            method: 'PUT',
-            headers: { "Content-Type": "application/json" },
-            /*body: JSON.stringify({
-                fishType: packageList[0].fishType,
-                fishAmount: packageList[0].fishAmount,
-                sellerId: "",
-                buyerId: null,
-                basePrice: packageList[0].basePrice,
-                soldPrice: null,
-                soldDate: null,
-                auctionId: "62802d81adf87b09accdc43e",
-                status: "UNSOLD"
-            }),*/
-            body: JSON.stringify(packageList[0]),
-
-        }).then((response) => response.json())
-            .then((result) => {
-                console.log("balık eklendi", result);
-            })
-
-
-    }
-
 
 
 

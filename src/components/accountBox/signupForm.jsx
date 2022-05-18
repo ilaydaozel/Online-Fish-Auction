@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import React, { useContext, useState } from "react";
 import PositiveNotification from '../PositiveNotification';
 import NegativeNotification from '../NegativeNotification';
 
@@ -13,8 +12,6 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import EmailExistNotification from '../notifications/emailExistNotification';
-import RegisterationSuccessNotification from '../notifications/registerationSuccessNotification';
 
 export function SignupForm(props) {
   const { switchToSignin } = useContext(AccountContext);
@@ -26,10 +23,6 @@ export function SignupForm(props) {
   const [phone, setphone] = useState('');
   const [password, setpassword] = useState('');
   const [passwordagain, setpasswordagain] = useState('');
-
-  const [emailexist, setemailexist] = useState(false);
-  const [registersuccess, setregistersuccess] = useState(false);
-
   const [added, setAdded] = useState(false);
   const [notAdded, setNotAdded] = useState(false);
   const [error, setError] = useState();
@@ -60,7 +53,6 @@ export function SignupForm(props) {
       setNotif(result.message);
       console.log(result.message);
     }).then((error) => {
-      // setNotAdded(true);
       console.log(notAdded);
       setError(error);
       console.log("err", error);

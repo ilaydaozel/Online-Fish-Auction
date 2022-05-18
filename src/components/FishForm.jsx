@@ -57,7 +57,7 @@ const FishForm = () => {
   return (
     <div className="create">
       <h1>Deniz ürünlerini sıradaki mezata ekle</h1>
-      <p style={{ color: '#1b4171', fontWeight: 'bold' }}>Sıradaki mezat tarihi : {currentDate}</p>
+      <p style={{ color: '#1b4171', fontWeight: 'bold' }}>Sıradaki mezat tarihi : {currentDate.split("T")[0]} {currentDate.split("T")[1]}</p>
 
       <form onSubmit={handleSubmit}>
         <label>Balık Türü:</label>
