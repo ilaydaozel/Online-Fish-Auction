@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-const Container= styled.div `
+const Container = styled.div`
   margin: 100px 0 0 0;
 `
 const Title = styled.h2`
@@ -26,11 +26,11 @@ function BasicTable(rows) {
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
-          <TableRow sx={{backgroundColor:'#EEEEEE'} }>
-            <TableCell> <Typography variant="h6" gutterBottom component="div" sx={{fontWeight: 'bold'}}>Balık Cinsi</Typography></TableCell>
-            <TableCell align="right"><Typography variant="h6" gutterBottom component="div"  sx={{fontWeight: 'bold' }}>Kg</Typography></TableCell>
-            <TableCell align="right"><Typography variant="h6" gutterBottom component="div"  sx={{fontWeight: 'bold'}}>Başlangıç Fiyatı</Typography></TableCell>
-            <TableCell align="right"><Typography variant="h6" gutterBottom component="div"  sx={{fontWeight: 'bold'}}>Balıkçı</Typography></TableCell>
+          <TableRow sx={{ backgroundColor: '#EEEEEE' }}>
+            <TableCell> <Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Balık Cinsi</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Kg</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Başlangıç Fiyatı</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Balıkçı</Typography></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -53,40 +53,38 @@ function BasicTable(rows) {
   );
 }
 
-
-
-const   FishTable = () => {
+const FishTable = () => {
   const { auctionId } = useParams()
   const [error, setError] = useState(null);
   const [auctionList, setAuctionList] = useState([]);
-  const [currentFishList, setCurrentFishList]= useState([]);
+  const [currentFishList, setCurrentFishList] = useState([]);
 
   useEffect(() => {
-      fetch('http://localhost:8080/auction')
-          .then(res => res.json())
-          .then(
-              (result) => {
-                  setAuctionList(result);
-                  setCurrentFishList(result.find(item => item.id === auctionId).fishList)
-              },
-              (error) => {
-                  setError(error);
-                  console.log(error);
-              })
-  }, []);
+    fetch('http://localhost:8080/auction')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setAuctionList(result);
+          setCurrentFishList(result.find(item => item.id === auctionId).fishList)
+        },
+        (error) => {
+          setError(error);
+          console.log(error);
+        })
+  }, []
+  );
 
-  const fishData=[]
+  const fishData = []
 
   for (let i = 0; i < currentFishList.length; i++) {
-    console.log("current", currentFishList[i])
-    const fishObj = {fishType: currentFishList[i].fishType, amountKg: currentFishList[i].fishAmount,  basePrice: currentFishList[i].basePrice, sellerName: currentFishList[i].sellerName }
+    const fishObj = { fishType: currentFishList[i].fishType, amountKg: currentFishList[i].fishAmount, basePrice: currentFishList[i].basePrice, sellerName: currentFishList[i].sellerId }
     fishData.push(fishObj)
   }
 
   return (
     <Container>
-    <Title> Mezatta Satılacak Balıklar</Title>
-    {BasicTable(fishData)}
+      <Title> Mezatta Satılacak Balıklar</Title>
+      {BasicTable(fishData)}
     </Container>
   )
 }

@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router";
+import PositiveNotification from '../PositiveNotification';
+import NegativeNotification from '../NegativeNotification';
 
 import {
   BoldLink,
@@ -11,8 +13,8 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import emailExistNotification from '../notifications/emailExistNotification';
-import registerationSuccessNotification from '../notifications/registerationSuccessNotification';
+import EmailExistNotification from '../notifications/emailExistNotification';
+import RegisterationSuccessNotification from '../notifications/registerationSuccessNotification';
 
 export function SignupForm(props) {
   const { switchToSignin } = useContext(AccountContext);
@@ -25,35 +27,14 @@ export function SignupForm(props) {
   const [password, setpassword] = useState('');
   const [passwordagain, setpasswordagain] = useState('');
 
-  const [flag, setflag] = useState(true);
   const [emailexist, setemailexist] = useState(false);
   const [registersuccess, setregistersuccess] = useState(false);
-  const [userList, setUserList] = useState(false);
 
-  // let history = useHistory();
+  const [added, setAdded] = useState(false);
+  const [notAdded, setNotAdded] = useState(false);
+  const [error, setError] = useState();
+  const [notif, setNotif] = useState("");
 
-  // useEffect(() => {
-  //   fetch('http://localhost:8080/user')
-  //   .then(res => res.json())
-  //   .then(
-  //     (result) => {
-  //       console.log(result);
-  //       setUserList(result);
-  //     })
-  //   });
-
-  //   const isExist = () => {
-  //     {userList.map(item => (
-  //       (item.email === email)? invalidemail() : ""))
-  //     }
-
-  //   }
-
-  //   const invalidemail = () => {
-  //     setemailexist(true);
-  //     setflag(false);
-
-  //   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,38 +48,50 @@ export function SignupForm(props) {
         surname: soyisim,
         address: adres,
         phoneNum: phone,
-        password: password
+        password: password,
+        passwordAgain: passwordagain
       }),
-    }).then((response) => response.json()
+    }).then((response) => response.json(),
+      setAdded(true),
     ).then((result) => {
-      localStorage.setItem("tokenKey", result.message);
-      localStorage.setItem("currentUser", result.userId);
-      localStorage.setItem("userMail", email)
+      if (result.message !== "Başarıyla kayıt olundu") {
+        setNotAdded(true);
+      }
+      setNotif(result.message);
+      console.log(result.message);
+    }).then((error) => {
+      // setNotAdded(true);
+      console.log(notAdded);
+      setError(error);
+      console.log("err", error);
     })
 
     setemail("");
     setpassword("");
-    // history.go("/login");
-
-
   }
 
   return (
     <BoxContainer>
-      <FormContainer required="true">
-        <Input type="text" placeholder="İsim" value={isim} onChange={(e) => setisim(e.target.value)} />
+      <FormContainer onSubmit={handleSubmit}>
+        <Input type="text" required placeholder="İsim" value={isim} onChange={(e) => setisim(e.target.value)} />
         <Input type="text" required placeholder="Soyisim" value={soyisim} onChange={(e) => setsoyisim(e.target.value)} />
-        <Input type="email" placeholder="Email" value={email} onChange={(e) => setemail(e.target.value)} />
-        <Input type="address" placeholder="Adres" value={adres} onChange={(e) => setadres(e.target.value)} />
-        <Input type="phone" placeholder="Telefon" value={phone} onChange={(e) => setphone(e.target.value)} />
-        <Input type="password" placeholder="Şifre" value={password} onChange={(e) => setpassword(e.target.value)} />
-        <Input type="password" placeholder="Şifre Tekrar" value={passwordagain} onChange={(e) => setpasswordagain(e.target.value)} />
+        <Input type="email" required placeholder="Email" value={email} onChange={(e) => setemail(e.target.value)} />
+        <Input type="address" required placeholder="Adres" value={adres} onChange={(e) => setadres(e.target.value)} />
+        <Input type="phone" required placeholder="Telefon" value={phone} onChange={(e) => setphone(e.target.value)} />
+        <Input type="password" required placeholder="Şifre" value={password} onChange={(e) => setpassword(e.target.value)} />
+        <Input type="password" required placeholder="Şifre Tekrar" value={passwordagain} onChange={(e) => setpasswordagain(e.target.value)} />
+
+        <SubmitButton>Kaydol</SubmitButton>
+
+        <PositiveNotification trigger={added} setTrigger={setAdded} message={notif}></PositiveNotification>
+        <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message={notif}></NegativeNotification>
+
       </FormContainer>
+
+
       <Marginer direction="vertical" margin={10} />
 
-      <SubmitButton type="submit" onClick={handleSubmit}>Kaydol</SubmitButton>
-      <emailExistNotification trigger={emailexist} setTrigger={setemailexist}></emailExistNotification>
-      <registerationSuccessNotification trigger={registersuccess} setTrigger={setregistersuccess}></registerationSuccessNotification>
+      {/* <SubmitButton type="submit" onClick={handleSubmit}>Kaydol</SubmitButton> */}
 
       <Marginer direction="vertical" margin="1em" />
       <MutedLink href="#">

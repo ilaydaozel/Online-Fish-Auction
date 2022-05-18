@@ -9,9 +9,9 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import emailDoesntExistNotification from '../notifications/emailDoesntExistNotification';
-import wrongPasswordNotification from '../notifications/wrongPasswordNotification';
-import loginSuccessNotification from '../notifications/loginSuccessNotification';
+import EmailDoesntExistNotification from '../notifications/emailDoesntExistNotification';
+import WrongPasswordNotification from '../notifications/wrongPasswordNotification';
+import LoginSuccessNotification from '../notifications/loginSuccessNotification';
 import { Navigate } from "react-router-dom";
 import NegativeNotification from '../NegativeNotification';
 
@@ -85,9 +85,9 @@ export function LoginForm(props) {
       <Marginer direction="vertical" margin="1.6em" />
 
       <SubmitButton type="submit" onClick={handleSubmit} >Giriş Yap</SubmitButton>
-      <emailDoesntExistNotification trigger={emaildoesntexist} setTrigger={setemaildoesntexist}></emailDoesntExistNotification>
-      <wrongPasswordNotification trigger={wrongpassword} setTrigger={setwrongpassword}></wrongPasswordNotification>
-      <loginSuccessNotification trigger={loginsuccess} setTrigger={setloginsuccess}></loginSuccessNotification>
+      <EmailDoesntExistNotification trigger={emaildoesntexist} setTrigger={setemaildoesntexist}></EmailDoesntExistNotification>
+      <WrongPasswordNotification trigger={wrongpassword} setTrigger={setwrongpassword}></WrongPasswordNotification>
+      <LoginSuccessNotification trigger={loginsuccess} setTrigger={setloginsuccess}></LoginSuccessNotification>
       <NegativeNotification trigger={er} setTrigger={setEr} message="E-mail ya da şifre yanlış"></NegativeNotification>
 
 

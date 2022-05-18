@@ -38,7 +38,7 @@ const FishForm = () => {
         fishType: newFish.species,
         fishAmount: newFish.kilogram,
         basePrice: newFish.floorPrice,
-        sellerName: newFish.sellerName,
+        email: newFish.sellerName,
       }),
     }).then((response) => response.json(),
       setAdded(true),
@@ -81,7 +81,7 @@ const FishForm = () => {
           onChange={(e) => setFloorPrice(e.target.value)}
         />
 
-        <label>Satıcı Adı:</label>
+        <label>Satıcı E-Mail Adresi:</label>
         <input
           value={sellerName}
           onChange={(e) => setSellerName(e.target.value)}

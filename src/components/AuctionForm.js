@@ -3,13 +3,17 @@ import { useState } from "react";
 import '../AuctionForm.css'
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import PositiveNotification from './PositiveNotification';
+import NegativeNotification from './NegativeNotification';
 
 function AuctionForm(props) {
 
     const [added, setAdded] = useState(false);
+    const [notAdded, setNotAdded] = useState(false);
 
     const [new_date, setnew_date] = useState('');
     const [new_time, setnew_time] = useState('');
+    const [error, setError] = useState();
+
 
     const handleClose = () => {
         handleSubmit()
@@ -19,7 +23,6 @@ function AuctionForm(props) {
     const handleSubmit = (e) => {
 
         e.preventDefault();
-        setAdded(true);
         // var nowDate = new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString();
         // console.log("now", nowDate)
         var date = new_date + 'T' + new_time + ':00Z'
@@ -36,10 +39,15 @@ function AuctionForm(props) {
                 fishList: [],
                 bidList: null
             }),
-        }).then((response) => response.json())
+        }).then((response) => response.json(),
+            setAdded(true),
+        )
             .then((result) => {
-                console.log("ekledi");
-                console.log(result);
+                console.log("res", result);
+            }).then((error) => {
+                setNotAdded(true);
+                setError(error);
+                console.log("err", error);
             })
     }
 
@@ -73,6 +81,7 @@ function AuctionForm(props) {
                     <br />
                     <button className="close-button" onClick={handleClose} >Yeni mezat ekle</button>
                     <PositiveNotification trigger={added} setTrigger={setAdded} message="Mezat Eklendi"></PositiveNotification>
+                    <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message="Geçmiş tarih seçildiği için Mezat Eklenemedi"></NegativeNotification>
                 </form>
 
             </div>
