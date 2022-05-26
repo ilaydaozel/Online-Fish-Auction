@@ -4,6 +4,7 @@ import '../AuctionForm.css'
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import PositiveNotification from './PositiveNotification';
 import NegativeNotification from './NegativeNotification';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 function AuctionForm(props) {
 
@@ -12,6 +13,7 @@ function AuctionForm(props) {
 
     const [new_date, setnew_date] = useState('');
     const [new_time, setnew_time] = useState('');
+    const [notif, setNotif] = useState("");
     const [error, setError] = useState();
 
 
@@ -19,6 +21,8 @@ function AuctionForm(props) {
         handleSubmit()
         props.setTrigger(false)
     }
+
+    window.addEventListener("keyup", function (e) { if (e.keyCode == 27) props.setTrigger(false); }, false);
 
     const handleSubmit = (e) => {
 
@@ -43,49 +47,51 @@ function AuctionForm(props) {
             setAdded(true),
         )
             .then((result) => {
+                if (result.message !== "Mezat başarıyla eklendi") {
+                    setNotAdded(true);
+                }
+                setNotif(result.message);
                 console.log("res", result);
-            }).then((error) => {
-                setNotAdded(true);
-                setError(error);
-                console.log("err", error);
             })
     }
 
     return (props.trigger) ? (
 
         <div className="AuctionForm">
-            <div className="AuctionForm-inner">
-                <div className="back">
-                    <BackspaceIcon onClick={() => props.setTrigger(false)}></BackspaceIcon>
-                    <h6>Geri Dön</h6>
-                </div>
-                <h3 style={{ color: '#1B4171', fontWeight: "bold" }}>Yeni Mezat Ekle</h3>
-                <form className="form" onSubmit={handleSubmit}>
-                    <label style={{ paddingRight: "10px" }}>Bir tarih seçin:  </label>
-                    <input
-                        type="date"
-                        required
-                        value={new_date}
-                        onChange={(e) => setnew_date(e.target.value)}
-                    />
-                    <br />
-                    <br />
-                    <label style={{ paddingRight: "10px" }}>Bir saat seçin:  </label>
-                    <input
-                        type="time"
-                        required
-                        value={new_time}
-                        onChange={(e) => setnew_time(e.target.value)}
-                    />
-                    <br />
-                    <br />
-                    <button className="close-button" onClick={handleClose} >Yeni mezat ekle</button>
-                    <PositiveNotification trigger={added} setTrigger={setAdded} message="Mezat Eklendi"></PositiveNotification>
-                    <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message="Geçmiş tarih seçildiği için Mezat Eklenemedi"></NegativeNotification>
-                </form>
+            <OutsideClickHandler onOutsideClick={() => props.setTrigger(false)}>
+                <div className="AuctionForm-inner">
+                    <div className="back">
+                        <BackspaceIcon onClick={() => props.setTrigger(false)}></BackspaceIcon>
+                        <h6>Geri Dön</h6>
+                    </div>
+                    <h3 style={{ color: '#1B4171', fontWeight: "bold" }}>Yeni Mezat Ekle</h3>
+                    <form className="form" onSubmit={handleSubmit}>
+                        <label style={{ paddingRight: "10px" }}>Bir tarih seçin:  </label>
+                        <input
+                            type="date"
+                            required
+                            value={new_date}
+                            onChange={(e) => setnew_date(e.target.value)}
+                        />
+                        <br />
+                        <br />
+                        <label style={{ paddingRight: "10px" }}>Bir saat seçin:  </label>
+                        <input
+                            type="time"
+                            required
+                            value={new_time}
+                            onChange={(e) => setnew_time(e.target.value)}
+                        />
+                        <br />
+                        <br />
+                        <button className="close-button" onClick={handleClose} >Yeni mezat ekle</button>
+                        <PositiveNotification trigger={added} setTrigger={setAdded} message={notif}></PositiveNotification>
+                        <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message={notif}></NegativeNotification>
+                    </form>
 
-            </div>
-        </div>
+                </div>
+            </OutsideClickHandler>
+        </div >
     ) : "";
 }
 

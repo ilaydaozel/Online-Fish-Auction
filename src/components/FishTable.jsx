@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+// import { useAsync } from "react-async"
 
 const Container = styled.div`
   margin: 100px 0 0 0;
@@ -56,16 +57,14 @@ function BasicTable(rows) {
 const FishTable = () => {
   const { auctionId } = useParams()
   const [error, setError] = useState(null);
-  const [auctionList, setAuctionList] = useState([]);
   const [currentFishList, setCurrentFishList] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/auction')
+    fetch(`http://localhost:8080/auction/auctionId/${auctionId}`)
       .then(res => res.json())
       .then(
         (result) => {
-          setAuctionList(result);
-          setCurrentFishList(result.find(item => item.id === auctionId).fishList)
+          setCurrentFishList(result.fishList);
         },
         (error) => {
           setError(error);
@@ -74,10 +73,33 @@ const FishTable = () => {
   }, []
   );
 
+  const [userName, setUserName] = useState("");
+  const getName = (id) => {
+    fetch(`http://localhost:8080/users/${id}`)
+      .then(
+        (result) => {
+          setUserName(result)
+        },
+        (error) => {
+          setError(error);
+          console.log(error);
+        })
+    return userName
+  }
+
+
+
   const fishData = []
 
   for (let i = 0; i < currentFishList.length; i++) {
-    const fishObj = { fishType: currentFishList[i].fishType, amountKg: currentFishList[i].fishAmount, basePrice: currentFishList[i].basePrice, sellerName: currentFishList[i].sellerId }
+    // console.log(getName(getName(currentFishList[i].sellerId)));
+    // console.log(getName(currentFishList[i].sellerId))
+    const fishObj = {
+      fishType: currentFishList[i].fishType,
+      amountKg: currentFishList[i].fishAmount,
+      basePrice: currentFishList[i].basePrice,
+      sellerName: currentFishList[i].sellerId
+    }
     fishData.push(fishObj)
   }
 

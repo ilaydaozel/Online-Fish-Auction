@@ -89,7 +89,7 @@ const FishForm = () => {
 
         <button>Balık Ekle</button>
         <PositiveNotification trigger={added} setTrigger={setAdded} message="Yeni Deniz Ürünü Eklendi"></PositiveNotification>
-        <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message="Deniz Ürünü Eklenmedi"></NegativeNotification>
+        <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message="Yeni deniz Ürünü Eklenmedi"></NegativeNotification>
 
       </form>
     </div>

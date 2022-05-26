@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import AuctionList from "./pages/AuctionList";
 import AuctionFishTable from './pages/AuctionFishTable';
 import Auction from './pages/Auction';
-import AddFish from './pages/AddFish';
+import AddFish from './pages/Addfish';
 import Login from "./pages/Login";
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";

@@ -35,7 +35,7 @@ const AuctionCardList = () => {
                 (result) => {
                     setAuctionList(result);
                 })
-    });
+    }, []);
 
     return (
         <Container>
