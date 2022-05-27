@@ -9,6 +9,7 @@ import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CheckIcon from '@mui/icons-material/Check';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 
 
@@ -47,6 +48,21 @@ const useStyles = makeStyles((theme) => ({
             color: "#000",
         }
     },
+    cancelButton: {
+        backgroundColor: "black",
+        border: '2px solid black',
+        color: "#FFFFFF",
+        borderRadius: "10px",
+        fontWeight: "700",
+        fontSize: "13px",
+        width: "60%",
+        marginTop: "5px",
+        '&:hover': {
+            backgroundColor: "#FFFFFF",
+            border: '2px solid black',
+            color: "#000",
+        }
+    }
 }))
 
 const Container = styled.div`
@@ -116,7 +132,7 @@ const AuctionCard = ({ item }) => {
                 (result) => {
                     setPackageList(result);
                 })
-    }, []);
+    });
 
     const startAuction = (e) => {
         fetch(`http://localhost:8080/auction/start/${item.id}`, {
@@ -140,6 +156,18 @@ const AuctionCard = ({ item }) => {
         })
             .then((result) => {
                 console.log("değişti", result);
+            })
+    }
+
+    const cancelAuction = (e) => {
+        fetch(`http://localhost:8080/auction/delete/${item.id}`, {
+            method: 'PUT',
+        }).then((response) => {
+            response.json()
+            e.preventDefault();
+        })
+            .then((result) => {
+                console.log("iptal oldu", result);
             })
     }
 
@@ -175,7 +203,6 @@ const AuctionCard = ({ item }) => {
                     </Button>
                 </Link>
 
-
                 {isOpen ?
                     <AuctionButtons>
                         <Link to={`/auction/${item.id}`} style={{ width: "100%", display: 'flex', justifyContent: 'center' }} >
@@ -187,17 +214,22 @@ const AuctionCard = ({ item }) => {
                             >Mezata Katıl
                             </Button>
                         </Link>
+
+                        {localStorage.getItem("userRole")==="ROLE_ADMIN"?
                         <Button onClick={endAuction}
                             variant="contained"
                             size="large"
                             className={classes.joinButton}
                             endIcon={<CloseIcon />}
                         >Mezatı Bitir
-                        </Button>
+                        </Button>: ""}
+
                     </AuctionButtons>
 
 
                     :
+
+                    (localStorage.getItem("userRole")==="ROLE_ADMIN")?
                     <AuctionButtons>
                         <Button onClick={startAuction}
                             variant="contained"
@@ -206,10 +238,19 @@ const AuctionCard = ({ item }) => {
                             endIcon={<CheckIcon />}
                         >Mezatı Başlat
                         </Button>
-
-
-                    </AuctionButtons>
+                    </AuctionButtons>: ""
                 }
+                
+                {(localStorage.getItem("userRole")==="ROLE_ADMIN")?
+                    <AuctionButtons>
+                        <Button onClick={cancelAuction}
+                            variant="contained"
+                            size="large"
+                            className={classes.cancelButton}
+                            endIcon={<DeleteForeverIcon />}
+                        >Mezatı İptal Et
+                        </Button>
+                    </AuctionButtons>: ""}
 
             </CardContainer>
         </Container>

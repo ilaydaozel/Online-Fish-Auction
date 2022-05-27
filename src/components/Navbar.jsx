@@ -95,7 +95,11 @@ const Navbar = () => {
         setLoggedOut(true);
         console.log(loggedOut);
         window.location.reload(true);
+    }
 
+
+    const handleButton=() =>{
+        window.location.href = '/userInfo'
     }
 
     return (
@@ -124,14 +128,17 @@ const Navbar = () => {
                             Mezatlar
                         </PageLink>
                     </MenuItem>
+                    
+                    {localStorage.getItem("userRole")==="ROLE_ADMIN"?
                     <MenuItem>
                         <PageLink href='/addfish'>
                             Balık Ekle
                         </PageLink>
-                    </MenuItem>
+                    </MenuItem>: "" }
 
                     <MenuItem>
-                        <Button
+                        <Button onClick ={handleButton}
+                            
                             variant="contained"
                             size="large"
                             className={classes.button}

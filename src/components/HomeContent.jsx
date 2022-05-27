@@ -71,7 +71,8 @@ const Content = styled.div``
 
 
 const HomeContent = () => {
-    console.log("current user", localStorage.getItem("currentUser"));
+    console.log("current user", localStorage.getItem("userRole"));
+    console.log("result", localStorage)
     return (
         <Container>
             <Left>

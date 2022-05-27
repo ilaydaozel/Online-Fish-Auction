@@ -37,6 +37,7 @@ export function LoginForm(props) {
           localStorage.setItem("tokenKey", result.message)
           localStorage.setItem("currentUser", result.userId)
           localStorage.setItem("userMail", email)
+          localStorage.setItem("userRole", (result.roles[0].name))
           window.location.reload(true);
         } else {
           setEr(true);
