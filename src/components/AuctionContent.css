@@ -1,0 +1,69 @@
+.table {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.table tr:hover {
+    background-color: #ddd;
+}
+
+.table th {
+    border-bottom: 1px solid black;
+}
+
+.table td {
+    border-bottom: 1px solid black;
+}
+
+.pickFish button {
+
+    background: #f08b3e;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100px;
+
+}
+
+.pickFish button:hover {
+    background-color: #ddd;
+}
+
+.pickFish input,
+.pickFish select {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+}
+
+.takebid input {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+
+}
+
+.takebid button {
+    background: #f08b3e;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.takebid button:hover {
+    background-color: #ddd;
+}

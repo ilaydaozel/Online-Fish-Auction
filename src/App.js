@@ -23,6 +23,7 @@ function App() {
         </Route>
         <Route exact path='/addFish' element={localStorage.getItem("currentUser") != null ? <AddFish /> : <Navigate to="/login" />}></Route>
         <Route exact path='/userInfo' element={localStorage.getItem("currentUser") != null ? <UserInfo /> : <Navigate to="/login" />}></Route>
+        
       </Routes>
     </Router>
 

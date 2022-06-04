@@ -14,7 +14,6 @@ function AuctionForm(props) {
     const [new_date, setnew_date] = useState('');
     const [new_time, setnew_time] = useState('');
     const [notif, setNotif] = useState("");
-    const [error, setError] = useState();
 
 
     const handleClose = () => {

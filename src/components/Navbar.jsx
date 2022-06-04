@@ -85,7 +85,21 @@ const PageLink = styled.a`
     margin: 0 10px;
 
 `
+const LogoutButton = styled.button`
+    background-color: #5AC8DD;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 13px;
+    width: 50px;
+    border: none;
+    height:38px;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
 
+    &:hover {
+        background-color: #1b4171;
+        color:  "white";
+    },
+`
 
 const Navbar = () => {
     const classes = useStyles();
@@ -148,9 +162,9 @@ const Navbar = () => {
                         </Button>
                     </MenuItem>
                     <MenuItem>
-                        <button onClick={handleLogOut}>
+                        <LogoutButton onClick={handleLogOut}>
                             <LogoutIcon style={{ color: "black" }} />
-                        </button>
+                        </LogoutButton>
                         {loggedOut ? <Navigate to="/login" /> : ""}
                     </MenuItem>
                 </Right>

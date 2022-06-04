@@ -40,17 +40,21 @@ const FishForm = () => {
         basePrice: newFish.floorPrice,
         email: newFish.sellerName,
       }),
-    }).then((response) => response.json(),
-      setAdded(true),
+    }).then((response) =>{
+      response.json()
+      if (response.ok){
+        setAdded(true)
+      }
+      else{
+        setNotAdded(true);
+      }
+    } 
     )
       .then((result) => {
         console.log("res", result);
       }).then((error) => {
-        setNotAdded(true);
-        setError(error);
-        console.log("err", error);
-      })
 
+      })
 
   }
 
@@ -88,6 +92,7 @@ const FishForm = () => {
         />
 
         <button>Balık Ekle</button>
+        {console.log(added)}
         <PositiveNotification trigger={added} setTrigger={setAdded} message="Yeni Deniz Ürünü Eklendi"></PositiveNotification>
         <NegativeNotification trigger={notAdded} setTrigger={setNotAdded} message="Yeni deniz Ürünü Eklenmedi"></NegativeNotification>
 
