@@ -119,8 +119,9 @@ const GivenBidsContainer= styled.div`
     justify-content: center;
     width: 40%;
     padding: 10px;
-    heigth: 800px;
-    background-color: gray;`
+    heigth: 300px;
+    background-color: #f5fbfd;
+    margin-left: 20px;`
 
 const Button = styled.button`
         background-color: #F76540;
@@ -189,19 +190,24 @@ const AuctionContent = (role) => {
     const url = 'http://localhost:8080/auction/getFishPackage/' + auction_id.auctionId;
 
     const { data: fishPackage, error, isPending } = useFetch(url);
-    const selectedFish  = PickNextFish();
 
-    const [currentFish, setCurrentFish] = useState(selectedFish);
+    const [currentFish, setCurrentFish] = useState("")
     const [bidList, setBidList] = useState([]);
     const [tempFish, setTempFish] = useState("");
+    const [selected, setSelected]=useState("");
 
     useEffect(() => {
         if (fishPackage) {
-            setCurrentFish(selectedFish);
+            setCurrentFish(fishPackage[0]);
         }
     }, [fishPackage]);
 
-    
+   /* setSelected(PickNextFish({fish: "hey", id:  auction_id.auctionId}));*/
+
+
+
+
+
     const handleClick = (e) => {
         console.log("submitted");
 
@@ -214,8 +220,9 @@ const AuctionContent = (role) => {
     }
 
     const giveBid =(e)=>{
-        
+
     }
+
     return (
         <Container>
             <UpperContainer>

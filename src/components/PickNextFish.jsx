@@ -6,8 +6,12 @@ import { useParams } from 'react-router-dom';
 
 
 const PickNextFish = (props) => {
+    console.log("id", props.id)
 
-    console.log("pack",props.array)
+    const url = 'http://localhost:8080/auction/getFishPackage/' + props.id;
+
+    const { data: fishPackage, error, isPending } = useFetch(url);
+
     if(props.fish !== ""){
         console.log("now fish next", props.fish)
     }
@@ -18,7 +22,7 @@ const PickNextFish = (props) => {
 
     return(
         
-        props.array[0]
+        fishPackage[0]
     )
 
 }
