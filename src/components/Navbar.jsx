@@ -149,6 +149,13 @@ const Navbar = () => {
                             Balık Ekle
                         </PageLink>
                     </MenuItem>: "" }
+                                        
+                    {localStorage.getItem("userRole")==="ROLE_ADMIN"?
+                    <MenuItem>
+                        <PageLink href='/sales'>
+                            Satışlarım
+                        </PageLink>
+                    </MenuItem>: "" }
 
                     <MenuItem>
                         <Button onClick ={handleButton}

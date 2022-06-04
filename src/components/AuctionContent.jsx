@@ -192,10 +192,36 @@ const AuctionContent = (role) => {
     useEffect(() => {
         if (fishPackage) {
             setCurrentFish(fishPackage[0]);
-        }   
-    }, [fishPackage]);
+            fetch('http://localhost:8080/package/startBid/' +  currentFish.id, {
+                method: 'PUT',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                fishPackageId: currentFish.id,
+                }),
+                }).then((response) =>
+                    {response.json()
+                     console.log("satışa çıktı", currentFish.id)}
+                )
+                    .then((result) => {
+                    console.log("res", result);         
+                    })}}, []);
 
 
+
+
+        useEffect(() => {
+               fetch("http://localhost:8080/package/fishPackageId/" + currentFish.id)
+                .then(res => {
+                    if (!res.ok) { // error coming back from server
+                    throw Error('could not fetch the data for that resource');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log("bidList", data);
+                
+                })
+            })
     const handleClick = (e) => {
         console.log("submitted");
         e.preventDefault();

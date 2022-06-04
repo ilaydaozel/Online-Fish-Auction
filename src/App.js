@@ -7,6 +7,7 @@ import AddFish from './pages/AddFish';
 import Login from "./pages/Login";
 import UserInfo from "./pages/UserInfo";
 import React from 'react';
+import SalesPage from "./pages/SalesPage"
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 
@@ -23,6 +24,7 @@ function App() {
         </Route>
         <Route exact path='/addFish' element={localStorage.getItem("currentUser") != null ? <AddFish /> : <Navigate to="/login" />}></Route>
         <Route exact path='/userInfo' element={localStorage.getItem("currentUser") != null ? <UserInfo /> : <Navigate to="/login" />}></Route>
+        <Route exact path='/sales' element={localStorage.getItem("currentUser") != null ? <SalesPage /> : <Navigate to="/login" />}></Route>
         
       </Routes>
     </Router>
