@@ -12,22 +12,14 @@ const Container = styled.div`
     display:flex;
     align-items: center;
     flex-direction: column;
-
 `
-
-
 const HeadTitle = styled.h1`
     color: #1b4171;
     test-align: center;
 `
-
-
 const PickFish = styled.div`
-    margin: 10px;
-
+    margin: 10px;   
 `
-
-
 const ContainerTitle = styled.h4`
     font-weight: 1000;
     color: #1b4171;
@@ -191,21 +183,41 @@ const AuctionContent = (role) => {
 
     const { data: fishPackage, error, isPending } = useFetch(url);
 
+    const [fishArray, setFishArray] = useState([]);
     const [currentFish, setCurrentFish] = useState("")
     const [bidList, setBidList] = useState([]);
     const [tempFish, setTempFish] = useState("");
     const [selected, setSelected]=useState("");
 
+    useEffect(()=> {
+        fetch('http://localhost:8080/auction/getFishPackage/' + auction_id.auctionId)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                setFishArray(result);  
+                setSelected(PickNextFish({fish: "", array: fishArray}));            
+            })
+        
+    }, [url])
+
+    const waitArray= new Promise((success, failure) =>{
+        if(fishArray !== []){
+            success("data came")
+        }
+        else{
+            failure("not yet")
+        }
+    })
+    waitArray.then((answer)=>console.log(answer))
+    .catch((error)=>console.log(error))
+
+    console.log("fisharr", fishArray);
+    console.log("selected", selected);
     useEffect(() => {
         if (fishPackage) {
-            setCurrentFish(fishPackage[0]);
-        }
+            setCurrentFish(fishArray[0]);
+        } 
     }, [fishPackage]);
-
-   /* setSelected(PickNextFish({fish: "hey", id:  auction_id.auctionId}));*/
-
-
-
 
 
     const handleClick = (e) => {
@@ -216,12 +228,18 @@ const AuctionContent = (role) => {
         /*setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));*/
         <PickNextFish fish = {currentFish}/>
         console.log("currentfish assigned", currentFish)
-        window.location.reload();
+        //window.location.reload();
+
+           
+              
+            
+
     }
 
     const giveBid =(e)=>{
 
     }
+
 
     return (
         <Container>
@@ -248,18 +266,24 @@ const AuctionContent = (role) => {
                             <CurFishInfo><CurFishInfoTitle>Satıcı </CurFishInfoTitle> {currentFish.sellerName} {currentFish.sellerSurname}</CurFishInfo>
                             {(localStorage.getItem("userRole") === "ROLE_ADMIN") ?
                                 <Button style={{width:"70%"}} onClick={() => {
-                                    const url = 'http://localhost:8080/auction/fishPackage/' + currentFish.id;
-                                    fetch(url, {
-                                        method: 'PUT',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'Accept': 'application/json'
-                                        }
-                                    }).then(res => res.json())
-                                        .then(data => {
-                                            console.log(data)
-                                        })
-                                }}>Deniz Ürününü Sat</Button>: ""}
+                                fetch('http://localhost:8080/package/sell/' +  currentFish.id, {
+                                    method: 'PUT',
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({
+                                    packageId: currentFish.id,
+                                    packageSoldRequest:{
+                                        buyerId: localStorage.getItem("currentUser"),
+                                        soldPrice: 40,
+                                        soldDate: null,
+                                    }}),
+                                    }).then((response) =>
+                                        {response.json()
+                                         console.log("satıldı")}
+                                    )
+                                        .then((result) => {
+                                        console.log("res", result);
+                                        
+                                        })}}>Deniz Ürününü Sat</Button>: ""}
                         </CurrentFishContainer>
 
             </UpperContainer>
@@ -277,15 +301,18 @@ const AuctionContent = (role) => {
                                     <th>Kilosu</th>
                                     <th>Başlangıç Fiyatı</th>
                                     <th>Satıcı</th>
+                                    <th> Status </th>
                                 </tr>
-                                {fishPackage.map(fish => (fish.status === "UNSOLD" &&
+                                {fishPackage.map(fish => (fish.status === "UNSOLD"?
                                     (<tr key={fish.id} >
                                         <td>{fish.turn} </td>
                                         <td>{fish.fishType} </td>
                                         <td>{fish.fishAmount} </td>
                                         <td>{fish.basePrice} </td>
                                         <td>{fish.sellerName} </td>
-                                    </tr>)
+                                        <td> {fish.status}</td>
+                             
+                                    </tr>): ""
                                 ))}
                             </FishListTable>
                         )}
