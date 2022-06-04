@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetch from "./useFetch";
 import './AuctionContent.css';
-import PickNextFish from './PickNextFish';
 
 
 const Container = styled.div`
@@ -160,6 +159,8 @@ const GiveBid =styled.div`
 const Form = styled.form`
     display: flex;
     align-items: center;
+    width: 80%;
+    justify-content: center;
 `
 const BidInput= styled.input`
     flex: 1;
@@ -180,7 +181,6 @@ const AuctionContent = (role) => {
 
     const auction_id = useParams();
     const url = 'http://localhost:8080/auction/getFishPackage/' + auction_id.auctionId;
-
     const { data: fishPackage, error, isPending } = useFetch(url);
 
     const [fishArray, setFishArray] = useState([]);
@@ -189,57 +189,22 @@ const AuctionContent = (role) => {
     const [tempFish, setTempFish] = useState("");
     const [selected, setSelected]=useState("");
 
-    useEffect(()=> {
-        fetch('http://localhost:8080/auction/getFishPackage/' + auction_id.auctionId)
-        .then(res => res.json())
-        .then(
-            (result) => {
-                setFishArray(result);  
-                setSelected(PickNextFish({fish: "", array: fishArray}));            
-            })
-        
-    }, [url])
-
-    const waitArray= new Promise((success, failure) =>{
-        if(fishArray !== []){
-            success("data came")
-        }
-        else{
-            failure("not yet")
-        }
-    })
-    waitArray.then((answer)=>console.log(answer))
-    .catch((error)=>console.log(error))
-
-    console.log("fisharr", fishArray);
-    console.log("selected", selected);
     useEffect(() => {
         if (fishPackage) {
-            setCurrentFish(fishArray[0]);
-        } 
+            setCurrentFish(fishPackage[0]);
+        }   
     }, [fishPackage]);
 
 
     const handleClick = (e) => {
         console.log("submitted");
-
         e.preventDefault();
-        setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));
-        /*setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));*/
-        <PickNextFish fish = {currentFish}/>
-        console.log("currentfish assigned", currentFish)
-        //window.location.reload();
-
-           
-              
-            
-
+        setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));   
     }
 
     const giveBid =(e)=>{
 
     }
-
 
     return (
         <Container>
@@ -367,8 +332,10 @@ const AuctionContent = (role) => {
             <BidContainer>
             <ContainerTitle>{currentFish.fishAmount} kilo {currentFish.fishType} için teklif ver</ContainerTitle>
                 <GiveBid>
-                    <BidInput type="number" placeholder="Teklifiniz"  />
-                    <Button type="submit" onClick={giveBid}>Teklif Ver</Button>
+                <Form onClick={giveBid}>
+                    <BidInput type="number" placeholder="Teklifiniz" />
+                    <Button type="submit" >Teklif Ver</Button>
+                </Form>    
                 </GiveBid>
             </BidContainer>
 
