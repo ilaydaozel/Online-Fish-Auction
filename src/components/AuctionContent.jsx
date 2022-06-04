@@ -143,7 +143,7 @@ const GivenBidsContainer= styled.div`
     heigth: 800px;
     background-color: gray;`
 
-const Button = styled.div`
+const Button = styled.button`
         background-color: #F76540;
         border: 2px solid #F76540;
         border-radius: 10px;
@@ -201,7 +201,7 @@ const AuctionContent = (role) => {
 
     const [currentFish, setCurrentFish] = useState({});
     const [bidList, setBidList] = useState([]);
-    const [temp, setTemp] = useState({});
+    const [tempFish, setTempFish] = useState("");
 
     useEffect(() => {
         if (fishPackage) {
@@ -209,11 +209,19 @@ const AuctionContent = (role) => {
         }
     }, [fishPackage]);
 
+    
     const handleClick = (e) => {
+        console.log("submitted");
+
         e.preventDefault();
-        setCurrentFish(temp);
+        setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));
+        /*setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));*/
+        console.log("currentfish assigned", currentFish)
     }
 
+    const giveBid =(e)=>{
+        
+    }
     return (
         <Container>
             <UpperContainer>
@@ -284,16 +292,20 @@ const AuctionContent = (role) => {
                     {
                         (localStorage.getItem("userRole") === "ROLE_ADMIN") && (fishPackage && (
                             <PickFish>
+                            <form onSubmit= {handleClick}>
                                 <h5>Satılacak balığı seçin:</h5>
-                                <select onChange={(e) => {
-                                    setTemp(e.target.value);
-                                }}>
-                                    {fishPackage.map(fish => (fish.status === "UNSOLD" &&
-                                        (<option key={fish.id} value={{ fish }}>Numara: {fish.turn} Tür: {fish.fishType}</option>)))}
+                                <select name="fish" placeholder='Deniz Ürünü' value={tempFish} onChange={(e) => setTempFish(e.target.value)}  >
+                            {fishPackage.map((item) => (
+                                
+                                <option value={item.id}>{item.id}</option>
+                                
+                                ))}
+                              
                                 </select>
-                                <AuctionButton onClick={handleClick}>Seç</AuctionButton>
-                                {console.log(temp)}
-                                {console.log(currentFish)}
+                                {console.log("tempfish",tempFish)}
+                                <Button type="submit" >Submit</Button>
+
+                            </form>
                             </PickFish>
                         ))}
 
