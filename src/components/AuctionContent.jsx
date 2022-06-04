@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetch from "./useFetch";
 import './AuctionContent.css';
+import PickNextFish from './PickNextFish';
 
 
 const Container = styled.div`
@@ -22,23 +23,11 @@ const HeadTitle = styled.h1`
 
 
 const PickFish = styled.div`
+    margin: 10px;
 
 `
-const AuctionButton=styled.button`
-    background: #F76540;
-    color: #fff;
-    border: 0;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100px;
-    &:hover{
 
-        background-color: #ddd;
 
-    }
-
-`
 const ContainerTitle = styled.h4`
     font-weight: 1000;
     color: #1b4171;
@@ -112,18 +101,8 @@ const LivePlaceHolder = styled.iframe`
 
 `
 
-/*.pickFish input,
-.pickFish select {
-    width: 100%;
-    padding: 6px 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    display: block;
-}
-*/
 const FishListTable= styled.table`
-    border: 2px solid forestgreen;
+    background-color: #f5fbfd; 
 `
 const FishList = styled.div`
     display: flex;
@@ -177,6 +156,18 @@ const BidContainer = styled.div`
     bottom:0;
     background-color: #fefae0;
 `
+
+
+const GiveBid =styled.div`
+    display: flex;
+    width: 80%;
+    margin-bottom: 10px;
+    align-itmes: center;
+`
+const Form = styled.form`
+    display: flex;
+    align-items: center;
+`
 const BidInput= styled.input`
     flex: 1;
     padding: 10px;
@@ -184,12 +175,12 @@ const BidInput= styled.input`
     border-radius: 10px;
     margin: 5px 10px;
 `
-
-const GiveBid =styled.div`
-    display: flex;
-    width: 80%;
-    margin-bottom: 10px;
-    align-itmes: center;
+const BidSelect= styled.select`
+    flex: 1;
+    padding: 10px;
+    border: 2px solid  #1b4171;
+    border-radius: 10px;
+    margin: 5px 10px;
 `
 
 const AuctionContent = (role) => {
@@ -198,14 +189,15 @@ const AuctionContent = (role) => {
     const url = 'http://localhost:8080/auction/getFishPackage/' + auction_id.auctionId;
 
     const { data: fishPackage, error, isPending } = useFetch(url);
+    const selectedFish  = PickNextFish();
 
-    const [currentFish, setCurrentFish] = useState({});
+    const [currentFish, setCurrentFish] = useState(selectedFish);
     const [bidList, setBidList] = useState([]);
     const [tempFish, setTempFish] = useState("");
 
     useEffect(() => {
         if (fishPackage) {
-            setCurrentFish(fishPackage[0]);
+            setCurrentFish(selectedFish);
         }
     }, [fishPackage]);
 
@@ -216,7 +208,9 @@ const AuctionContent = (role) => {
         e.preventDefault();
         setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));
         /*setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));*/
+        <PickNextFish fish = {currentFish}/>
         console.log("currentfish assigned", currentFish)
+        window.location.reload();
     }
 
     const giveBid =(e)=>{
@@ -292,20 +286,18 @@ const AuctionContent = (role) => {
                     {
                         (localStorage.getItem("userRole") === "ROLE_ADMIN") && (fishPackage && (
                             <PickFish>
-                            <form onSubmit= {handleClick}>
-                                <h5>Satılacak balığı seçin:</h5>
-                                <select name="fish" placeholder='Deniz Ürünü' value={tempFish} onChange={(e) => setTempFish(e.target.value)}  >
-                            {fishPackage.map((item) => (
-                                
-                                <option value={item.id}>{item.id}</option>
-                                
-                                ))}
-                              
-                                </select>
-                                {console.log("tempfish",tempFish)}
-                                <Button type="submit" >Submit</Button>
+                            <h5>Satılacak balığı seçin:</h5>
+                            <Form onSubmit= {handleClick}>
 
-                            </form>
+                                <BidSelect name="fish" placeholder='Deniz Ürünü' value={tempFish} onChange={(e) => setTempFish(e.target.value)}  >
+                            {fishPackage.map((item) => (  
+                                <option value={item.id}>Cinsi: {item.fishType}, Kilosu: {item.fishAmount}</option>
+                                
+                                ))} </BidSelect>
+
+                                <Button type="submit" >Seç</Button>
+
+                            </Form>
                             </PickFish>
                         ))}
 

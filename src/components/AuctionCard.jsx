@@ -160,7 +160,7 @@ const AuctionCard = ({ item }) => {
     }
 
     const cancelAuction = (e) => {
-        fetch(`http://localhost:8080/auction/delete/${item.id}`, {
+        fetch(`http://localhost:8080/auction/cancel/${item.id}`, {
             method: 'PUT',
         }).then((response) => {
             response.json()
