@@ -31,8 +31,8 @@ function BasicTable(rows) {
             <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Kg</Typography></TableCell>
             <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Başlangıç Fiyatı</Typography></TableCell>
             <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Satış Fiyatı</Typography></TableCell>
-            <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Satın Alan</Typography></TableCell>          
-            <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Satış Tarihi</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Satan</Typography></TableCell>          
+            <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Satın Alan</Typography></TableCell>
             <TableCell align="right"><Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 'bold' }}>Mezat Numarası</Typography></TableCell>
           </TableRow>
         </TableHead>
@@ -48,8 +48,8 @@ function BasicTable(rows) {
               <TableCell align="right">{row.amountKg}</TableCell>
               <TableCell align="right">{row.basePrice}</TableCell>
               <TableCell align="right">{row.soldPrice}</TableCell>
-              <TableCell align="right">{row.sellerName}</TableCell>
-              <TableCell align="right">{row.soldDate}</TableCell>
+              <TableCell align="right">{row.sellerId}</TableCell>
+              <TableCell align="right">{row.buyerId}</TableCell>
               <TableCell align="right">{row.auctionId}</TableCell>
             </TableRow>
           ))}
@@ -65,11 +65,12 @@ const FishTable = () => {
   const [currentFishList, setCurrentFishList] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/package/allSoldPackage`)
+    fetch(`http://localhost:8080/package/allSoldPackages`)
       .then(res => res.json())
       .then(
         (result) => {
-          setCurrentFishList(result.fishList);
+          console.log("result fish pck ", result)
+          setCurrentFishList(result);
         },
         (error) => {
           setError(error);
@@ -77,21 +78,6 @@ const FishTable = () => {
         })
   }, []
   );
-
-  const [userName, setUserName] = useState("");
-  const getName = (id) => {
-    fetch(`http://localhost:8080/users/${id}`)
-      .then(
-        (result) => {
-          setUserName(result)
-        },
-        (error) => {
-          setError(error);
-          console.log(error);
-        })
-    return userName
-  }
-
 
 
   const fishData = []
@@ -102,14 +88,15 @@ const FishTable = () => {
         amountKg: currentFishList[i].fishAmount,
         basePrice: currentFishList[i].basePrice,
         soldPrice: currentFishList[i].soldPrice,
-        sellerName: currentFishList[i].sellerName,
-        soldDate: currentFishList[i].soldDate,
+        sellerId: currentFishList[i].sellerId,
+        buyerId: currentFishList[i].buyerId,
         auctionId: currentFishList[i].auctionId
       }
       fishData.push(fishObj)
     }
   }
 
+  console.log("cur fish list",currentFishList)
  
 
   return (
