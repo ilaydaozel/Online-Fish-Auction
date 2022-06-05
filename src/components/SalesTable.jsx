@@ -95,19 +95,22 @@ const FishTable = () => {
 
 
   const fishData = []
-
-  for (let i = 0; i < currentFishList.length; i++) {
-    const fishObj = {
-      fishType: currentFishList[i].fishType,
-      amountKg: currentFishList[i].fishAmount,
-      basePrice: currentFishList[i].basePrice,
-      soldPrice: currentFishList[i].soldPrice,
-      sellerName: currentFishList[i].sellerName,
-      soldDate: currentFishList[i].soldDate,
-      auctionId: currentFishList[i].auctionId
+  if(currentFishList){
+    for (let i = 0; i < currentFishList.length; i++) {
+      const fishObj = {
+        fishType: currentFishList[i].fishType,
+        amountKg: currentFishList[i].fishAmount,
+        basePrice: currentFishList[i].basePrice,
+        soldPrice: currentFishList[i].soldPrice,
+        sellerName: currentFishList[i].sellerName,
+        soldDate: currentFishList[i].soldDate,
+        auctionId: currentFishList[i].auctionId
+      }
+      fishData.push(fishObj)
     }
-    fishData.push(fishObj)
   }
+
+ 
 
   return (
     <Container>

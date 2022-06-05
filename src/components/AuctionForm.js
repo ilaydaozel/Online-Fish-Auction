@@ -32,6 +32,8 @@ function AuctionForm(props) {
         // console.log("date", denemedate);
         // console.log("şuanki date", ankiDate);
 
+        //
+
         fetch('http://localhost:8080/auction', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -43,11 +45,13 @@ function AuctionForm(props) {
                 bidList: null
             }),
         }).then((response) => response.json(),
-            setAdded(true),
+
         )
             .then((result) => {
                 if (result.message !== "Mezat başarıyla eklendi") {
                     setNotAdded(true);
+                } else {
+                    setAdded(true);
                 }
                 setNotif(result.message);
                 console.log("res", result);

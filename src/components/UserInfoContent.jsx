@@ -7,7 +7,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import EditIcon from '@mui/icons-material/Edit';
-import useFetch from "./useFetch";
+import PassChangeForm from './PasswordChangeForm';
 
 
 const Container = styled.div`
@@ -28,11 +28,10 @@ const ProfileContainer = styled.div`
     display: flex;
     flex-direction: row;
     background-color: #fff;  
-    padding: 30px;
+    padding: 20px;
     margin-top: 20px;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
-    
 `
 const ConstInfoContainer = styled.div`
     display: flex;
@@ -44,16 +43,17 @@ const ConstInfoContainer = styled.div`
 `
 const ConstInfo = styled.div`
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     margin: 15px;
     padding: 5px;
+    justify-content:flex-start;
     
 `
-const ConstTitle = styled.h2`
-    color: #35858B;;
+const ConstTitle = styled.h3`
+    color: #1b4171;;
     /*text-decoration: underline;
     text-decoration-color: #35858B;*/
-    margin-right: 10px;
+    margin-right: 8px;
 `
 const ConstContent = styled.h3`
     color: #222;
@@ -71,11 +71,11 @@ const PasswordButton = styled.button`
     margin: 15px;
     padding: 5px;
     background-color: #072227;
-    border: 2px solid #4FBDBA;
+    border: 2px solid #1b4171;
     color: #fff;
     &:hover {
-    background-color: #4FBDBA;
-    border: 2px solid #AEFEFF;
+    background-color: #1b4171;
+    border: 2px solid #1b4171;
         
   }
 `
@@ -85,11 +85,11 @@ const Table = styled.div`
   align-items: center;
 `
 const TableFrame = styled.table`
-  border: 2px solid forestgreen;
+  border: 2px solid #1b4171;
   width: 800px;
 `
 const TableRow = styled.tr`
-  border: 2px solid forestgreen;
+  border: 2px solid #1b4171;
   width: 800px;
   hover: {background-color: #4FBDBA;}
 `
@@ -105,7 +105,7 @@ const Image = styled.img`
 `
 
 const mail = localStorage.getItem("userMail")
-const id = localStorage.getItem("id")
+const id = localStorage.getItem("currentUser")
 
 const UserInfo = () => {
 
@@ -113,8 +113,6 @@ const UserInfo = () => {
   const [userInfo, setUserInfo] = useState({});
   const [myFishes, setMyFishes] = useState([]);
 
-  //const { data: userInfo } = useFetch('http://localhost:8080/users/mail/' + mail);
-  //const { data: myFishes } = useFetch('http://localhost:8080/package/' + id);
 
   //initialize userInfo
   useEffect(() => {
@@ -140,9 +138,7 @@ const UserInfo = () => {
       <Wrapper>
 
         <ProfileContainer>
-          <Image src={Avatar} />
-          {console.log(userInfo)}
-          {console.log(myFishes)}
+          <Image src={Avatar} style={{width:"200px", heigth: "200px" }} />
           <ConstInfoContainer>
             <ConstInfo><ConstTitle></ConstTitle><ConstContent>{userInfo.name} {userInfo.surname} </ConstContent></ConstInfo>
           </ConstInfoContainer>
@@ -154,8 +150,8 @@ const UserInfo = () => {
             <ConstInfo><ConstTitle><EmailIcon fontSize='large' />Email: </ConstTitle><ConstContent>{userInfo.userMail} </ConstContent></ConstInfo>
             <ConstInfo><ConstTitle><HomeIcon fontSize='large' />Adres: </ConstTitle><ConstContent>{userInfo.address}</ConstContent></ConstInfo>
             <ConstInfo><ConstTitle><LocalPhoneIcon fontSize='large' />Telefon Numarası: </ConstTitle><ConstContent>{userInfo.phoneNum}</ConstContent></ConstInfo>
-            {/* <PasswordButton onClick={() => setPassChangeForm(true)}>Change Password <EditIcon style={{ paddingLeft: "5px" }} /></PasswordButton>
-            <PassChangeForm trigger={passChangeForm} setTrigger={setPassChangeForm} userId={id} /> */}
+            <PasswordButton onClick={() => setPassChangeForm(true)}>Şifreni Değiştir <EditIcon style={{ paddingLeft: "5px" }} /></PasswordButton>
+            <PassChangeForm trigger={passChangeForm} setTrigger={setPassChangeForm} userId={id} />
           </ConstInfoContainer>
         </ProfileContainer>
 
@@ -177,7 +173,7 @@ const UserInfo = () => {
                     <TableContents>{fish.fishType}</TableContents>
                     <TableContents>{fish.fishAmount}</TableContents>
                     <TableContents>{fish.soldPrice}</TableContents>
-                    <TableContents>{fish.sellerName}</TableContents>
+                    <TableContents>{fish.sellerId}</TableContents>
                   </TableRow>
                 ))}
               </TableFrame>

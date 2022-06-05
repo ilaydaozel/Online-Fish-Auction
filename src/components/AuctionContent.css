@@ -5,7 +5,11 @@
     align-items: center;
 }
 
+.table table {
+    border: 2px solid forestgreen;
+    width: 800px;
 
+}
 
 .table tr:hover {
     background-color: #ddd;

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useFetch from "./useFetch";
 import './AuctionContent.css';
+import PositiveNotification from './PositiveNotification';
 
 
 const Container = styled.div`
@@ -35,7 +35,7 @@ const UpperContainer = styled.div`
 `
 const LowerContainer = styled.div`
     display: flex;
-    align-items:center;
+    align-items:space-between;
     justify-content: center;
     margin-bottom: 200px;
     width: 100%;
@@ -65,14 +65,13 @@ const CurrentFishContainer = styled.div`
     heigth: 100%;
     background-color: #f5fbfd;
 `
-const CurFishInfoTitle =styled.h5`
+const CurFishInfoTitle = styled.h5`
     color: #1b4171;
     display: flex;
     flex-direction: row;
     margin-right: 20px;
     align-items: center;
     font-weight: 900;
-
 `
 const CurFishInfo = styled.div`
     display:flex;
@@ -84,15 +83,12 @@ const LiveStreamContainer = styled.div`
     width: 60%;
     margin: 10px;
     border: 1px solid gray; 
-
 `
 const LivePlaceHolder = styled.iframe`
     width: 100%;
-
-
 `
 
-const FishListTable= styled.table`
+const FishListTable = styled.table`
     background-color: #f5fbfd; 
 `
 const FishList = styled.div`
@@ -100,7 +96,7 @@ const FishList = styled.div`
     justify-content: center;
     align-items: center;
 `
-const GivenBidsContainer= styled.div`
+const GivenBidsContainer = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -126,13 +122,11 @@ const Button = styled.button`
         color: #FFFFFF;
         text-align: center;
         height: 40px;
-
         &:hover{
             background-color: #FFFFFF;
             border: 2px solid #F76540;
             color: #000000;
         }
-
 `
 /* give bid */
 
@@ -150,7 +144,7 @@ const BidContainer = styled.div`
 `
 
 
-const GiveBid =styled.div`
+const GiveBid = styled.div`
     display: flex;
     width: 80%;
     margin-bottom: 10px;
@@ -162,74 +156,110 @@ const Form = styled.form`
     width: 80%;
     justify-content: center;
 `
-const BidInput= styled.input`
+const BidInput = styled.input`
     flex: 1;
     padding: 10px;
     border: 2px solid  #1b4171;
     border-radius: 10px;
     margin: 5px 10px;
 `
-const BidSelect= styled.select`
+const BidSelect = styled.select`
     flex: 1;
     padding: 10px;
     border: 2px solid  #1b4171;
     border-radius: 10px;
     margin: 5px 10px;
 `
-
-const AuctionContent = (role) => {
+const Th = styled.th`
+    padding: 10px;
+`
+const AuctionContent = () => {
 
     const auction_id = useParams();
     const url = 'http://localhost:8080/auction/getFishPackage/' + auction_id.auctionId;
-    const { data: fishPackage, error, isPending } = useFetch(url);
 
-    const [fishArray, setFishArray] = useState([]);
-    const [currentFish, setCurrentFish] = useState("")
-    const [bidList, setBidList] = useState([]);
-    const [tempFish, setTempFish] = useState("");
-    const [selected, setSelected]=useState("");
+    //const { data: fishPackage, error, isPending } = useFetch(url);
+    const [fishPackage, setFishPackage] = useState([]);
 
     useEffect(() => {
-        if (fishPackage) {
-            setCurrentFish(fishPackage[0]);
-            fetch('http://localhost:8080/package/startBid/' +  currentFish.id, {
-                method: 'PUT',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                fishPackageId: currentFish.id,
-                }),
-                }).then((response) =>
-                    {response.json()
-                     console.log("satışa çıktı", currentFish.id)}
-                )
-                    .then((result) => {
-                    console.log("res", result);         
-                    })}}, []);
-
-
-
-
-        useEffect(() => {
-               fetch("http://localhost:8080/package/fishPackageId/" + currentFish.id)
-                .then(res => {
-                    if (!res.ok) { // error coming back from server
-                    throw Error('could not fetch the data for that resource');
-                    }
-                    return res.json();
+        fetch(url)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setFishPackage(result);
+                    setBidList(currentFish.bids)
                 })
-                .then(data => {
-                    console.log("bidList", data);
-                
-                })
-            })
-    const handleClick = (e) => {
-        console.log("submitted");
+    });
+
+
+
+    const [currentFish, setCurrentFish] = useState({});
+    const [bidList, setBidList] = useState([]);
+
+    const [newBidValue, setNewBidValue] = useState(0);
+    const [sortedBidList, setSortedBidList] = useState([]);
+
+
+    const [currentFishId, setCurrentFishId] = useState('');
+    const [maxBid, setMaxBid] = useState(0);
+    const [sold, setSold]=useState(false);
+
+    const handleClickPickFish = (e) => {
         e.preventDefault();
-        setCurrentFish(fishPackage.find( ( selectedFish ) => selectedFish.id === tempFish));   
+
+        const url = 'http://localhost:8080/auction/getCurrentFish/' + currentFishId;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+
+                setCurrentFish(data);
+
+                if (data.bids.length > 0) {
+                    setMaxBid(data.bids[0].bid);
+                } else {
+                    setMaxBid(data.basePrice)
+                }
+            });
     }
 
-    const giveBid =(e)=>{
+    const handleClickSellFish = (e) => {
+        e.preventDefault();
 
+        fetch('http://localhost:8080/auctionManager/sellPackage/' + currentFish.id, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+
+        }).then((response) => {
+            response.json()
+            if(response.ok === true){
+                setSold(true)
+            }
+           this.render();
+
+        }
+        )
+        .then((result) => {
+                console.log("res", result);
+            })
+    }
+
+    const handleNewBid = (e) => {
+        e.preventDefault();
+
+        if (newBidValue > maxBid) {
+            fetch('http://localhost:8080/auctionManager/bid', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    bidderId: localStorage.getItem('currentUser'),
+                    bid: newBidValue
+                })
+            })
+            setMaxBid(newBidValue);
+        } else {
+            alert("En yüksek tekliften ya da taban fiyatından daha yüksek teklif vermelisiniz!");
+        }
     }
 
     return (
@@ -237,73 +267,55 @@ const AuctionContent = (role) => {
             <UpperContainer>
                 <LiveStreamContainer>
                     <LivePlaceHolder
-                        overflow= "hidden"
-                            width="100%"
-                             height="360"
-                            src= "https://www.youtube.com/watch?v=PEA1R0FMctM"
-                            frameBorder="0"
-                            allowFullScreen= ""
-                            allow="accelerometer;  clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        />
-                    </LiveStreamContainer>
+                        overflow="hidden"
+                        width="100%"
+                        height="360"
+                        src="https://www.youtube.com/watch?v=PEA1R0FMctM"
+                        frameBorder="0"
+                        allowFullScreen=""
+                        allow="accelerometer;  clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    />
+                </LiveStreamContainer>
 
-                
-                    <CurrentFishContainer>
-                            <ContainerTitle>Şu anda satılan deniz ürünü</ContainerTitle>
-                            <CurFishInfo><CurFishInfoTitle>Tür </CurFishInfoTitle> {currentFish.fishType}</CurFishInfo>
-                            <CurFishInfo><CurFishInfoTitle>Kilo </CurFishInfoTitle> {currentFish.fishAmount}</CurFishInfo>
-                            <CurFishInfo><CurFishInfoTitle>Açılış Fiyatı </CurFishInfoTitle> {currentFish.basePrice}</CurFishInfo>
-                            <CurFishInfo><CurFishInfoTitle>Son Fiyat </CurFishInfoTitle> {currentFish.soldPrice}</CurFishInfo>
-                            <CurFishInfo><CurFishInfoTitle>Satıcı </CurFishInfoTitle> {currentFish.sellerName} {currentFish.sellerSurname}</CurFishInfo>
-                            {(localStorage.getItem("userRole") === "ROLE_ADMIN") ?
-                                <Button style={{width:"70%"}} onClick={() => {
-                                fetch('http://localhost:8080/package/sell/' +  currentFish.id, {
-                                    method: 'PUT',
-                                    headers: { "Content-Type": "application/json" },
-                                    body: JSON.stringify({
-                                    packageId: currentFish.id,
-                                    packageSoldRequest:{
-                                        buyerId: localStorage.getItem("currentUser"),
-                                        soldPrice: 40,
-                                        soldDate: null,
-                                    }}),
-                                    }).then((response) =>
-                                        {response.json()
-                                         console.log("satıldı")}
-                                    )
-                                        .then((result) => {
-                                        console.log("res", result);
-                                        
-                                        })}}>Deniz Ürününü Sat</Button>: ""}
-                        </CurrentFishContainer>
+
+                <CurrentFishContainer>
+                    <ContainerTitle>Şu anda satılan deniz ürünü</ContainerTitle>
+                    
+                    <CurFishInfo><CurFishInfoTitle>Tür </CurFishInfoTitle> {currentFish.fishType}</CurFishInfo>
+                    <CurFishInfo><CurFishInfoTitle>Kilo </CurFishInfoTitle> {currentFish.fishAmount}</CurFishInfo>
+                    <CurFishInfo><CurFishInfoTitle>Açılış Fiyatı </CurFishInfoTitle> {currentFish.basePrice}</CurFishInfo>
+                    <CurFishInfo style={{border: "2px solid #1b4171", backgroundColor:"#fff", padding: "10px 5px ", margin:"10px 0 15px"}}><CurFishInfoTitle style={{color: "#F76540"}}>En yüksek Teklif </CurFishInfoTitle> {maxBid}</CurFishInfo>
+                    {(localStorage.getItem("userRole") === "ROLE_ADMIN") ?
+                        <Button style={{ width: "70%" }} onClick={handleClickSellFish}>Deniz Ürününü Sat</Button> : ""}
+                    {console.log("sold",sold)}    
+                    {sold? <PositiveNotification  trigger={sold} setTrigger={setSold}  message="Deniz Ürünü Satıldı" />: ""}    
+                </CurrentFishContainer>
 
             </UpperContainer>
-              <LowerContainer>
-              <AuctionFishListContainer>
+            <LowerContainer>
+                <AuctionFishListContainer>
                     <ContainerTitle>Mezattaki Balıklar</ContainerTitle>
                     <FishList >
-                        {isPending && <div>Loading...</div>}
-                        {error && <div>Error!</div>}
+
                         {fishPackage && (
                             <FishListTable>
                                 <tr>
-                                    <th>Numara</th>
-                                    <th>Balık Türü</th>
-                                    <th>Kilosu</th>
-                                    <th>Başlangıç Fiyatı</th>
-                                    <th>Satıcı</th>
-                                    <th> Status </th>
+                                    <Th>Numara</Th>
+                                    <Th>Balık Türü</Th>
+                                    <Th>Kilosu</Th>
+                                    <Th>Başlangıç Fiyatı</Th>
+                                    <Th>Satıcı</Th>
+
                                 </tr>
-                                {fishPackage.map(fish => (fish.status === "UNSOLD"?
+                                {fishPackage.map(fish => (fish.status === "UNSOLD" ?
                                     (<tr key={fish.id} >
                                         <td>{fish.turn} </td>
                                         <td>{fish.fishType} </td>
                                         <td>{fish.fishAmount} </td>
                                         <td>{fish.basePrice} </td>
-                                        <td>{fish.sellerName} </td>
-                                        <td> {fish.status}</td>
-                             
-                                    </tr>): ""
+                                        <td> {fish.sellerName} </td>
+
+                                    </tr>) : ""
                                 ))}
                             </FishListTable>
                         )}
@@ -311,18 +323,19 @@ const AuctionContent = (role) => {
                     {
                         (localStorage.getItem("userRole") === "ROLE_ADMIN") && (fishPackage && (
                             <PickFish>
-                            <h5>Satılacak balığı seçin:</h5>
-                            <Form onSubmit= {handleClick}>
+                                <h5>Satılacak balığı seçin:</h5>
+                                <Form onSubmit={handleClickPickFish}>
 
-                                <BidSelect name="fish" placeholder='Deniz Ürünü' value={tempFish} onChange={(e) => setTempFish(e.target.value)}  >
-                            {fishPackage.map((item) => (  
-                                <option value={item.id}>Cinsi: {item.fishType}, Kilosu: {item.fishAmount}</option>
-                                
-                                ))} </BidSelect>
+                                    <BidSelect onChange={(e) => setCurrentFishId(e.target.value)}>
+                                        {fishPackage.map(fish => (fish.status === "UNSOLD" &&
+                                            (<option key={fish.id} value={fish.id}>Numara: {fish.turn} Tür: {fish.fishType}</option>)
+                                        ))}
+                                    
+                                    </BidSelect>
 
-                                <Button type="submit" >Seç</Button>
+                                    <Button type="submit" >Seç</Button>
 
-                            </Form>
+                                </Form>
                             </PickFish>
                         ))}
 
@@ -330,38 +343,45 @@ const AuctionContent = (role) => {
 
 
                 <GivenBidsContainer>
-                <ContainerTitle>{currentFish.fishAmount} kilo {currentFish.fishType} için teklifler</ContainerTitle>
-                <div className="table" >
-                            {bidList && (
-                                <table>
-                                    <tr>
-                                        <th>Teklifler</th>
-                                        <th>Teklifi Veren Kullanıcı</th>
-                                    </tr>
-                                    {bidList.map(bid => (
-                                        <tr key={bid.id} >
-                                            <td>{bid.bid} </td>
-                                            <td>{bid.bidderId} </td>
+                    <ContainerTitle>{currentFish.fishAmount} kilo {currentFish.fishType} için teklifler</ContainerTitle>
 
-                                        </tr>
-                                    ))}
-                                </table>
-                            )
-                            }
-                        </div >
+                    <div className="table" >
+                        {bidList && (
+                            <table>
+                                <tr>
+                                    <th>Teklifler</th>
+                                    <th>Teklifi Veren Kullanıcı</th>
+                                </tr>
+                                {bidList.reverse().map(bid => (
+                                    <tr key={bid.id} >
+                                        <td>{bid.bid} </td>
+                                        <td>{bid.bidderId} </td>
+                                    </tr>
+                                ))}
+
+                            </table>
+                        )
+                        }
+                    </div >
 
                 </GivenBidsContainer>
 
-              </LowerContainer> 
-            
+            </LowerContainer>
 
             <BidContainer>
-            <ContainerTitle>{currentFish.fishAmount} kilo {currentFish.fishType} için teklif ver</ContainerTitle>
+                <ContainerTitle>{currentFish.fishAmount} kilo {currentFish.fishType} için teklif ver</ContainerTitle>
                 <GiveBid>
-                <Form onClick={giveBid}>
-                    <BidInput type="number" placeholder="Teklifiniz" />
-                    <Button type="submit" >Teklif Ver</Button>
-                </Form>    
+                    <Form onSubmit={handleNewBid}>
+                        <BidInput
+                            type="number"
+                            placeholder="Teklif"
+                            required
+                            value={newBidValue}
+                            onChange={(e) => setNewBidValue(e.target.value)} />
+                        <Button type="submit" >Teklif Ver</Button>
+
+
+                    </Form>
                 </GiveBid>
             </BidContainer>
 
@@ -371,6 +391,3 @@ const AuctionContent = (role) => {
 }
 
 export default AuctionContent;
-
-
-
